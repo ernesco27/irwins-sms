@@ -13,6 +13,14 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        irwinSky: "#C3EBFA",
+        irwinSkyLight: "#EDF9FD",
+        irwinPurple: "#CFCEFF",
+        irwinPurpleLight: "#F1F0FF",
+        irwinYellow: "#FAE27C",
+        irwinYellowLight: "#FEFCE8",
+      },
     },
   },
   plugins: [],

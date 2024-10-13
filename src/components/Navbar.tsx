@@ -10,7 +10,7 @@ const Navbar = () => {
         <input
           type="text"
           placeholder="search..."
-          className="w-[200px] bg-transparent outline-none"
+          className="w-[200px] bg-transparent outline-none py-2 pr-4 text-lg"
         />
       </div>
       {/* icons and User */}
