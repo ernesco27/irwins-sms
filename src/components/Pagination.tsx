@@ -7,7 +7,7 @@ const Pagination = () => {
       >
         Prev
       </button>
-      <div>
+      <div className="flex items-center gap-2 text-sm">
         <button className="px-2 rounded-sm bg-irwinSky">1</button>
         <button className="px-2 rounded-sm ">2</button>
         <button className="px-2 rounded-sm ">3</button>
