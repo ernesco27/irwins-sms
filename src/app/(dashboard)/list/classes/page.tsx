@@ -23,7 +23,6 @@ const columns = [
   {
     header: "Capacity",
     accessor: "capacity",
-    className: "hidden md:table-cell",
   },
   {
     header: "Class",
@@ -43,6 +42,28 @@ const columns = [
   },
 ];
 
+const columnsNon = [
+  {
+    header: "Class Name",
+    accessor: "name",
+  },
+  {
+    header: "Capacity",
+    accessor: "capacity",
+  },
+  {
+    header: "Class",
+    accessor: "class",
+    className: "hidden md:table-cell",
+  },
+
+  {
+    header: "Supervisor",
+    accessor: "supervisor",
+    className: "hidden lg:table-cell",
+  },
+];
+
 const ClassesListPage = () => {
   const renderRow = (item: Class) => (
     <tr
@@ -52,24 +73,24 @@ const ClassesListPage = () => {
       <td className="flex items-center gap-4 p-4">
         <h3 className="font-semibold">{item.name}</h3>
       </td>
-      <td className="hidden md:table-cell">{item.capacity}</td>
+      <td>{item.capacity}</td>
       <td className="hidden md:table-cell">{item.class}</td>
       <td className="hidden md:table-cell">{item.supervisor}</td>
       <td>
-        <div className="flex items-center gap-2">
-          <Link href={`/list/classes/${item.id}`}>
-            <button className="flex w-7 h-7 items-center justify-center rounded-full bg-irwinSky">
-              <Image src="/view.png" alt="" width={16} height={16} />
-            </button>
-          </Link>
-          {role === "admin" && (
+        {role === "admin" && (
+          <div className="flex items-center gap-2">
+            <Link href={`/list/classes/${item.id}`}>
+              <button className="flex w-7 h-7 items-center justify-center rounded-full bg-irwinSky">
+                <Image src="/edit.png" alt="" width={16} height={16} />
+              </button>
+            </Link>
             <Link href={`/list/classes/${item.id}`}>
               <button className="flex w-7 h-7 items-center justify-center rounded-full bg-irwinPurple">
                 <Image src="/delete.png" alt="" width={16} height={16} />
               </button>
             </Link>
-          )}
-        </div>
+          </div>
+        )}
       </td>
     </tr>
   );
@@ -96,7 +117,11 @@ const ClassesListPage = () => {
       </div>
       {/*LIST */}
       <div className="">
-        <Table columns={columns} renderRow={renderRow} data={classesData} />
+        <Table
+          columns={role === "admin" ? columns : columnsNon}
+          renderRow={renderRow}
+          data={classesData}
+        />
       </div>
       {/* PAGINATION */}
       <Pagination />
