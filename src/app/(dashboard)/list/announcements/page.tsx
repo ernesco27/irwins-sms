@@ -1,7 +1,8 @@
+import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { announcementsData, eventsData, role } from "@/lib/data";
+import { announcementsData, role } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -64,16 +65,8 @@ const AnnouncementListPage = () => {
       <td>
         {(role === "admin" || role === "teacher") && (
           <div className="flex items-center gap-2">
-            <Link href={`/list/announcements/${item.id}`}>
-              <button className="flex w-7 h-7 items-center justify-center rounded-full bg-irwinSky">
-                <Image src="/edit.png" alt="" width={16} height={16} />
-              </button>
-            </Link>
-            <Link href={`/list/announcements/${item.id}`}>
-              <button className="flex w-7 h-7 items-center justify-center rounded-full bg-irwinPurple">
-                <Image src="/delete.png" alt="" width={16} height={16} />
-              </button>
-            </Link>
+            <FormModal table="announcement" type="update" id={item.id} />
+            <FormModal table="announcement" type="delete" id={item.id} />
           </div>
         )}
       </td>
@@ -96,9 +89,9 @@ const AnnouncementListPage = () => {
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-irwinYellow ">
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-irwinYellow ">
-              <Image src="/plus.png" alt="" width={14} height={14} />
-            </button>
+            {role === "admin" && (
+              <FormModal table="announcement" type="create" />
+            )}
           </div>
         </div>
       </div>
