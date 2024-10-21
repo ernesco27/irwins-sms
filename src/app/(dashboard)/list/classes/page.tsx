@@ -80,7 +80,7 @@ const ClassesListPage = () => {
       <td>
         {role === "admin" && (
           <div className="flex items-center gap-2">
-            <FormModal table="class" type="update" id={item.id} />
+            <FormModal table="class" type="update" data={item} />
             <FormModal table="class" type="delete" id={item.id} />
           </div>
         )}

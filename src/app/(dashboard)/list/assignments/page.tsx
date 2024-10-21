@@ -78,7 +78,7 @@ const AssignmentsListPage = () => {
       <td>
         {(role === "admin" || role === "teacher") && (
           <div className="flex items-center gap-2">
-            <FormModal table="assignment" type="update" id={item.id} />
+            <FormModal table="assignment" type="update" data={item} />
             <FormModal table="assignment" type="delete" id={item.id} />
           </div>
         )}

@@ -64,12 +64,7 @@ const LessonsListPage = () => {
       <td>
         {role === "admin" && (
           <div className="flex items-center gap-2">
-            {/* <Link href={`/list/lessons/${item.id}`}>
-              <button className="flex w-7 h-7 items-center justify-center rounded-full bg-irwinSky">
-                <Image src="/edit.png" alt="" width={16} height={16} />
-              </button>
-            </Link> */}
-            <FormModal table="lesson" type="update" id={item.id} />
+            <FormModal table="lesson" type="update" data={item} />
             <FormModal table="lesson" type="delete" id={item.id} />
           </div>
         )}

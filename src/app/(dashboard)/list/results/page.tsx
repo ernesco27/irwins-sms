@@ -103,12 +103,7 @@ const ResultsListPage = () => {
       <td>
         {(role === "admin" || role === "teacher") && (
           <div className="flex items-center gap-2">
-            {/* <Link href={`/list/results/${item.id}`}>
-              <button className="flex w-7 h-7 items-center justify-center rounded-full bg-irwinSky">
-                <Image src="/edit.png" alt="" width={16} height={16} />
-              </button>
-            </Link> */}
-            <FormModal table="result" type="update" id={item.id} />
+            <FormModal table="result" type="update" data={item} />
             <FormModal table="result" type="delete" id={item.id} />
           </div>
         )}
