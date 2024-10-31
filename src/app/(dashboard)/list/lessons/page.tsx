@@ -2,19 +2,12 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { lessonsData, role } from "@/lib/data";
+import { getSessionData } from "@/lib/utils";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { Class, Lesson, Prisma, Subject, Teacher } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-
-// type Lesson = {
-//   id: number;
-//   subject: string;
-//   classGroup: string;
-//   teacher: string;
-// };
 
 type LessonList = Lesson & { teacher: Teacher } & { class: Class } & {
   subject: Subject;
@@ -56,33 +49,35 @@ const columnsNon = [
   },
 ];
 
-const renderRow = (item: LessonList) => (
-  <tr
-    key={item.id}
-    className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
-  >
-    <td className="flex items-center gap-4 p-4">
-      <h3 className="font-semibold">{item.subject.name}</h3>
-    </td>
-    <td>{item.class.name}</td>
-    <td className="hidden md:table-cell">{`${item.teacher.firstName} ${item.teacher.lastName}`}</td>
-
-    <td>
-      {role === "admin" && (
-        <div className="flex items-center gap-2">
-          <FormModal table="lesson" type="update" data={item} />
-          <FormModal table="lesson" type="delete" id={item.id} />
-        </div>
-      )}
-    </td>
-  </tr>
-);
-
 const LessonsListPage = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
+  const { role, currentUserId } = await getSessionData();
+
+  const renderRow = (item: LessonList) => (
+    <tr
+      key={item.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
+    >
+      <td className="flex items-center gap-4 p-4">
+        <h3 className="font-semibold">{item.subject.name}</h3>
+      </td>
+      <td>{item.class.name}</td>
+      <td className="hidden md:table-cell">{`${item.teacher.firstName} ${item.teacher.lastName}`}</td>
+
+      <td>
+        {role === "admin" && (
+          <div className="flex items-center gap-2">
+            <FormModal table="lesson" type="update" data={item} />
+            <FormModal table="lesson" type="delete" id={item.id} />
+          </div>
+        )}
+      </td>
+    </tr>
+  );
+
   const { page, ...queryParams } = searchParams;
 
   const p = page ? parseInt(page) : 1;

@@ -2,25 +2,13 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, studentsData } from "@/lib/data";
+import { getSessionData } from "@/lib/utils";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { Class, Prisma, Student } from "@prisma/client";
 
 import Image from "next/image";
 import Link from "next/link";
-
-// type Student = {
-//   id: number;
-//   studentId: string;
-//   name: string;
-//   email?: string;
-//   photo: string;
-//   phone?: string;
-//   class: number;
-//   classGroup: string;
-//   address: string;
-// };
 
 type StudentList = Student & { classes: Class };
 
@@ -58,49 +46,51 @@ const columns = [
   },
 ];
 
-const renderRow = (item: StudentList) => (
-  <tr
-    key={item.id}
-    className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
-  >
-    <td className="flex items-center gap-4 p-4">
-      <Image
-        src={item.img || "/noAvatar.png"}
-        alt=""
-        width={40}
-        height={40}
-        className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
-      />
-      <div className="flex flex-col">
-        <h3 className="font-semibold">{`${item.firstName} ${item.lastName}`}</h3>
-        <p className="text-xs text-gray-500">{item.class.name}</p>
-      </div>
-    </td>
-    <td className="hidden md:table-cell">{item.id}</td>
-    <td className="hidden md:table-cell">{item.class.name[0]}</td>
-
-    <td className="hidden md:table-cell">{item.phoneNumber}</td>
-    <td className="hidden md:table-cell">{item.address}</td>
-    <td>
-      <div className="flex items-center gap-2">
-        <Link href={`/list/students/${item.id}`}>
-          <button className="flex w-7 h-7 items-center justify-center rounded-full bg-irwinSky">
-            <Image src="/view.png" alt="" width={16} height={16} />
-          </button>
-        </Link>
-        {role === "admin" && (
-          <FormModal table="student" type="delete" id={item.id} />
-        )}
-      </div>
-    </td>
-  </tr>
-);
-
 const StudentListPage = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
+  const { role } = await getSessionData();
+
+  const renderRow = (item: StudentList) => (
+    <tr
+      key={item.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
+    >
+      <td className="flex items-center gap-4 p-4">
+        <Image
+          src={item.img || "/noAvatar.png"}
+          alt=""
+          width={40}
+          height={40}
+          className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
+        />
+        <div className="flex flex-col">
+          <h3 className="font-semibold">{`${item.firstName} ${item.lastName}`}</h3>
+          <p className="text-xs text-gray-500">{item.classes.name}</p>
+        </div>
+      </td>
+      <td className="hidden md:table-cell">{item.id}</td>
+      <td className="hidden md:table-cell">{item.classes.name[0]}</td>
+
+      <td className="hidden md:table-cell">{item.phoneNumber}</td>
+      <td className="hidden md:table-cell">{item.address}</td>
+      <td>
+        <div className="flex items-center gap-2">
+          <Link href={`/list/students/${item.id}`}>
+            <button className="flex w-7 h-7 items-center justify-center rounded-full bg-irwinSky">
+              <Image src="/view.png" alt="" width={16} height={16} />
+            </button>
+          </Link>
+          {role === "admin" && (
+            <FormModal table="student" type="delete" id={item.id} />
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+
   const { page, ...queryParams } = searchParams;
 
   const p = page ? parseInt(page) : 1;

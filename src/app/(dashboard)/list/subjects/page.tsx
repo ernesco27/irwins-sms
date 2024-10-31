@@ -2,18 +2,12 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, subjectsData } from "@/lib/data";
+import { getSessionData } from "@/lib/utils";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { Prisma, Student, Subject, Teacher } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-
-// type Subject = {
-//   id: number;
-//   name?: string;
-//   teachers: string[];
-// };
 
 type SubjectList = Subject & { teachers: Teacher[] };
 
@@ -34,37 +28,39 @@ const columns = [
   },
 ];
 
-const renderRow = (item: SubjectList) => (
-  <tr
-    key={item.id}
-    className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
-  >
-    <td className="flex items-center gap-4 p-4">
-      <h3 className="font-semibold">{item.name}</h3>
-    </td>
-    <td className="hidden md:table-cell">
-      {item.teachers
-        .map((teacher) => `${teacher.firstName} ${teacher.lastName}  `)
-        .join(", ")}
-    </td>
-    <td>
-      <div className="flex items-center gap-2">
-        {role === "admin" && (
-          <>
-            <FormModal table="subject" type="update" data={item} />
-            <FormModal table="subject" type="delete" id={item.id} />
-          </>
-        )}
-      </div>
-    </td>
-  </tr>
-);
-
 const SubjectListPage = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
+  const { role } = await getSessionData();
+
+  const renderRow = (item: SubjectList) => (
+    <tr
+      key={item.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
+    >
+      <td className="flex items-center gap-4 p-4">
+        <h3 className="font-semibold">{item.name}</h3>
+      </td>
+      <td className="hidden md:table-cell">
+        {item.teachers
+          .map((teacher) => `${teacher.firstName} ${teacher.lastName}  `)
+          .join(", ")}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {role === "admin" && (
+            <>
+              <FormModal table="subject" type="update" data={item} />
+              <FormModal table="subject" type="delete" id={item.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+
   const { page, ...queryParams } = searchParams;
 
   const p = page ? parseInt(page) : 1;

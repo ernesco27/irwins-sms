@@ -2,7 +2,7 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { classesData, role } from "@/lib/data";
+import { getSessionData } from "@/lib/utils";
 import prisma from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { Class, Prisma, Teacher } from "@prisma/client";
@@ -59,33 +59,35 @@ const columnsNon = [
   },
 ];
 
-const renderRow = (item: ClassList) => (
-  <tr
-    key={item.id}
-    className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
-  >
-    <td className="flex items-center gap-4 p-4">
-      <h3 className="font-semibold">{item.name}</h3>
-    </td>
-    <td>{item.capacity}</td>
-    <td className="hidden md:table-cell">{item.name[0]}</td>
-    <td className="hidden md:table-cell">{`${item.supervisor.firstName} ${item.supervisor.lastName}`}</td>
-    <td>
-      {role === "admin" && (
-        <div className="flex items-center gap-2">
-          <FormModal table="class" type="update" data={item} />
-          <FormModal table="class" type="delete" id={item.id} />
-        </div>
-      )}
-    </td>
-  </tr>
-);
-
 const ClassesListPage = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) => {
+  const { role, currentUserId } = await getSessionData();
+
+  const renderRow = (item: ClassList) => (
+    <tr
+      key={item.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
+    >
+      <td className="flex items-center gap-4 p-4">
+        <h3 className="font-semibold">{item.name}</h3>
+      </td>
+      <td>{item.capacity}</td>
+      <td className="hidden md:table-cell">{item.name[0]}</td>
+      <td className="hidden md:table-cell">{`${item.supervisor.firstName} ${item.supervisor.lastName}`}</td>
+      <td>
+        {role === "admin" && (
+          <div className="flex items-center gap-2">
+            <FormModal table="class" type="update" data={item} />
+            <FormModal table="class" type="delete" id={item.id} />
+          </div>
+        )}
+      </td>
+    </tr>
+  );
+
   const { page, ...queryParams } = searchParams;
 
   const p = page ? parseInt(page) : 1;
