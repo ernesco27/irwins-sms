@@ -1,4 +1,30 @@
-const Announcements = () => {
+import prisma from "@/lib/prisma";
+import { getSessionData } from "@/lib/utils";
+
+const Announcements = async () => {
+  const { currentUserId, role } = await getSessionData();
+
+  const roleConditions = {
+    teacher: { lessons: { some: { teacherId: currentUserId! } } },
+    student: { students: { some: { id: currentUserId! } } },
+    parent: { students: { some: { parentId: currentUserId! } } },
+  };
+
+  const data = await prisma.announcement.findMany({
+    take: 3,
+    orderBy: { date: "desc" },
+    where: {
+      ...(role !== "admin" && {
+        OR: [
+          { classId: null },
+          {
+            class: roleConditions[role as keyof typeof roleConditions] || {},
+          },
+        ],
+      }),
+    },
+  });
+
   return (
     <div className="bg-white p-4 rounded-md">
       <div className="flex items-center justify-between">
@@ -8,41 +34,31 @@ const Announcements = () => {
       <div className="flex flex-col gap-4">
         <div className="bg-irwinSkyLight rounded-md p-4 mt-4">
           <div className="flex items-center justify-between">
-            <h2 className="font-medium">Lorem ipsum dolor sit amet</h2>
+            <h2 className="font-medium">{data[0].title}</h2>
             <span className="text-xs text-gray-400 bg-white rounded-md px-1 py-1">
-              01-10-2024
+              {new Intl.DateTimeFormat("en-GB").format(data[0].date)}
             </span>
           </div>
-          <p className="text-sm text-gray-400 mt-1">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-            sapiente sit, quam, tenetur nesciunt itaque sunt praesentium ipsa d.
-          </p>
+          <p className="text-sm text-gray-400 mt-1">{data[0].description}</p>
         </div>
-        <div className="bg-irwinPurpleLight rounded-md p-4 mt-4">
+        {/* <div className="bg-irwinPurpleLight rounded-md p-4 mt-4">
           <div className="flex items-center justify-between">
-            <h2 className="font-medium">Lorem ipsum dolor sit amet</h2>
+            <h2 className="font-medium">{data[1].title}</h2>
             <span className="text-xs text-gray-400 bg-white rounded-md px-1 py-1">
-              01-10-2024
+              {new Intl.DateTimeFormat("en-GB").format(data[1].date)}
             </span>
           </div>
-          <p className="text-sm text-gray-400 mt-1">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-            totam maiores officia quis error culpa, alias neque mollitia rerum
-            impedit similique saepe.
-          </p>
-        </div>
-        <div className="bg-irwinYellowLight rounded-md p-4 mt-4">
+          <p className="text-sm text-gray-400 mt-1">{data[1].description}</p>
+        </div> */}
+        {/* <div className="bg-irwinYellowLight rounded-md p-4 mt-4">
           <div className="flex items-center justify-between">
-            <h2 className="font-medium">Lorem ipsum dolor sit amet</h2>
+            <h2 className="font-medium">{data[2].title}</h2>
             <span className="text-xs text-gray-400 bg-white rounded-md px-1 py-1">
-              01-10-2024
+              {new Intl.DateTimeFormat("en-GB").format(data[2].date)}
             </span>
           </div>
-          <p className="text-sm text-gray-400 mt-1">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maxime
-            laborum et neque impedit, provident sit incidunt{" "}
-          </p>
-        </div>
+          <p className="text-sm text-gray-400 mt-1">{data[2].description}</p>
+        </div> */}
       </div>
     </div>
   );
