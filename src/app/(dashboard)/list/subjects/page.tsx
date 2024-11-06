@@ -8,6 +8,7 @@ import { ITEM_PER_PAGE } from "@/lib/settings";
 import { Prisma, Student, Subject, Teacher } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import FormContainer from "@/components/FormContainer";
 
 type SubjectList = Subject & { teachers: Teacher[] };
 
@@ -52,8 +53,8 @@ const SubjectListPage = async ({
         <div className="flex items-center gap-2">
           {role === "admin" && (
             <>
-              <FormModal table="subject" type="update" data={item} />
-              <FormModal table="subject" type="delete" id={item.id} />
+              <FormContainer table="subject" type="update" data={item} />
+              <FormContainer table="subject" type="delete" id={item.id} />
             </>
           )}
         </div>
@@ -109,7 +110,9 @@ const SubjectListPage = async ({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-irwinYellow ">
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
-            {role === "admin" && <FormModal table="subject" type="create" />}
+            {role === "admin" && (
+              <FormContainer table="subject" type="create" />
+            )}
           </div>
         </div>
       </div>
