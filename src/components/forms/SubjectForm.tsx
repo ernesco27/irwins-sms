@@ -92,8 +92,6 @@ const SubjectForm = ({
             {...register("teachers")}
             defaultValue={data?.teacher}
           >
-            {/* <option value="male">Male</option>
-            <option value="female">Female</option> */}
             {teachers.map(
               (teacher: {
                 id: string;

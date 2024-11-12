@@ -9,8 +9,9 @@ import { Class, Prisma, Student } from "@prisma/client";
 
 import Image from "next/image";
 import Link from "next/link";
+import FormContainer from "@/components/FormContainer";
 
-type StudentList = Student & { classes: Class };
+type StudentList = Student & { class: Class };
 
 const columns = [
   {
@@ -68,11 +69,11 @@ const StudentListPage = async ({
         />
         <div className="flex flex-col">
           <h3 className="font-semibold">{`${item.firstName} ${item.lastName}`}</h3>
-          <p className="text-xs text-gray-500">{item.classes.name}</p>
+          <p className="text-xs text-gray-500">{item.class.name}</p>
         </div>
       </td>
       <td className="hidden md:table-cell">{item.id}</td>
-      <td className="hidden md:table-cell">{item.classes.name[0]}</td>
+      <td className="hidden md:table-cell">{item.class.name[0]}</td>
 
       <td className="hidden md:table-cell">{item.phoneNumber}</td>
       <td className="hidden md:table-cell">{item.address}</td>
@@ -84,7 +85,7 @@ const StudentListPage = async ({
             </button>
           </Link>
           {role === "admin" && (
-            <FormModal table="student" type="delete" id={item.id} />
+            <FormContainer table="student" type="delete" id={item.id} />
           )}
         </div>
       </td>
@@ -148,7 +149,9 @@ const StudentListPage = async ({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-irwinYellow ">
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
-            {role === "admin" && <FormModal table="student" type="create" />}
+            {role === "admin" && (
+              <FormContainer table="student" type="create" />
+            )}
           </div>
         </div>
       </div>
