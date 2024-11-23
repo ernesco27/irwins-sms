@@ -12,6 +12,9 @@ import { createStudent, updateStudent } from "@/lib/action";
 import { CldUploadWidget } from "next-cloudinary";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import StepOne from "./StepOne";
+import StepTwo from "./StepTwo";
+import StepThree from "./StepThree";
 
 const StudentForm = ({
   type,
@@ -40,9 +43,17 @@ const StudentForm = ({
     },
   );
   const [img, setImg] = useState<any>();
+  const [step, setStep] = useState<any>(1);
+  const [formData, setFormData] = useState(data || {});
+
+  const handleNext = (stepData: any) => {
+    setFormData((prev: any) => ({ ...prev, ...stepData }));
+    setStep((prev: number) => prev + 1);
+  };
+
+  const handlePrevious = () => setStep((prev: number) => prev - 1);
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
     formAction({ ...data, img: img?.secure_url });
   });
 
@@ -61,11 +72,27 @@ const StudentForm = ({
   const { classes, grades } = relatedData;
 
   return (
-    <form className="flex flex-col gap-8" onSubmit={onSubmit}>
+    <div className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">
         {type === "update" ? "Update Student's Info" : "Add New Student"}
       </h1>
-      <span className="text-xs text-gray-400 font-medium ">
+      {step === 1 && <StepOne initialData={formData} onNext={handleNext} />}
+      {step === 2 && (
+        <StepTwo
+          initialData={formData}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+        />
+      )}
+      {step === 3 && (
+        <StepThree
+          initialData={formData}
+          onPrevious={handlePrevious}
+          onSubmit={handleSubmit}
+          relatedData={relatedData}
+        />
+      )}
+      {/* <span className="text-xs text-gray-400 font-medium ">
         Authentication Information
       </span>
       <div className="flex justify-between gap-4 flex-wrap">
@@ -241,27 +268,18 @@ const StudentForm = ({
           )}
         </div>
         <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
-          {/* <label
-            className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
-            htmlFor="img"
-          >
-            <Image src="/upload.png" alt="" width={28} height={28} />
-            <span>Upload a photo</span>
-          </label>
-          <input type="file" id="img" {...register("img")} className="hidden" /> */}
-
           {errors.img?.message && (
             <p className="text-xs text-red-400">
               {errors.img.message.toString()}
             </p>
           )}
         </div>
-      </div>
+      </div> */}
 
-      <button className="bg-blue-400 text-white p-2 rounded-md">
+      {/* <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "update"}
-      </button>
-    </form>
+      </button> */}
+    </div>
   );
 };
 

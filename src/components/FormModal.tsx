@@ -14,6 +14,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 import { FormContainerProps } from "./FormContainer";
+import Spinner from "./Spinner";
 
 const deleteActionMap = {
   subject: deleteSubject,
@@ -35,7 +36,7 @@ const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
 });
 
 const StudentForm = dynamic(() => import("./forms/StudentForm"), {
-  loading: () => <h1>Loading...</h1>,
+  loading: () => <Spinner />,
 });
 
 const ParentForm = dynamic(() => import("./forms/ParentForm"), {

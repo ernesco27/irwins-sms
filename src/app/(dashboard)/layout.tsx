@@ -2,8 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import Menu from "@/components/Menu";
 import Navbar from "@/components/Navbar";
+import MenuContainer from "@/components/MenuContainer";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -21,7 +22,7 @@ export default function DashboardLayout({
             IrwinsSMS
           </span>
         </Link>
-        <Menu />
+        <MenuContainer />
       </div>
 
       {/* RIGHT */}

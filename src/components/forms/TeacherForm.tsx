@@ -187,24 +187,11 @@ const TeacherForm = ({
             </p>
           )}
         </div>
-        {/* <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
-          <label
-            className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
-            htmlFor="img"
-          >
-            <Image src="/upload.png" alt="" width={28} height={28} />
-            <span>Upload a photo</span>
-          </label>
-          <input type="file" id="img" {...register("img")} className="hidden" />
-          {errors.img?.message && (
-            <p className="text-xs text-red-400">
-              {errors.img.message.toString()}
-            </p>
-          )}
-        </div> */}
+
         <CldUploadWidget
           uploadPreset="school"
           onSuccess={(result, widget) => {
+            console.log(result);
             setImg(result.info);
             widget.close();
           }}

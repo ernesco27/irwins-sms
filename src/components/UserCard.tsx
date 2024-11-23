@@ -4,13 +4,15 @@ import Image from "next/image";
 const UserCard = async ({
   type,
 }: {
-  type: "admin" | "teachers" | "parents" | "students";
+  type: "admin" | "teachers" | "parents" | "students" | "lessons" | "classes";
 }) => {
   const modelMap: Record<typeof type, any> = {
     admin: prisma.admin,
     teachers: prisma.teacher,
     parents: prisma.parent,
     students: prisma.student,
+    lessons: prisma.lesson,
+    classes: prisma.class,
   };
 
   const data = await modelMap[type].count();
