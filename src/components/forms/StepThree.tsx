@@ -34,7 +34,7 @@ export default function StepThree({ initialData, onNext, onPrevious }: any) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h2>Step 3: Contact Details</h2>
+      <h2 className="text-lg font-semibold mb-4">Step 3: Contact Details</h2>
       <div className="flex justify-between gap-4 flex-wrap">
         <InputField
           label="Phone Number"
@@ -73,19 +73,21 @@ export default function StepThree({ initialData, onNext, onPrevious }: any) {
         />
       </div>
 
-      <button
-        type="button"
-        onClick={onPrevious}
-        className="bg-gray-500 text-white px-4 py-2 rounded"
-      >
-        Previous
-      </button>
-      <button
-        type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Next
-      </button>
+      <div className="flex gap-4">
+        <button
+          type="button"
+          onClick={onPrevious}
+          className="bg-gray-500 text-white px-4 py-2 rounded mt-8 text-lg hover:bg-gray-400"
+        >
+          Previous
+        </button>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded mt-8 text-lg hover:bg-blue-400"
+        >
+          Next
+        </button>
+      </div>
     </form>
   );
 }

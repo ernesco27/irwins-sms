@@ -39,8 +39,10 @@ export default function StepOne({ initialData, onNext }: any) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h2>Step 1: Authentication Information</h2>
-      <div className="flex justify-between gap-4 flex-wrap">
+      <h2 className="text-lg font-semibold mb-4">
+        Step 1: Authentication Information
+      </h2>
+      <div className="flex justify-start ml-6 gap-12  flex-wrap">
         <InputField
           label="Username"
           name="username"
@@ -68,7 +70,7 @@ export default function StepOne({ initialData, onNext }: any) {
 
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded"
+        className="bg-blue-500 text-white px-4 py-2 rounded mt-8 text-lg hover:bg-blue-400"
       >
         Next
       </button>

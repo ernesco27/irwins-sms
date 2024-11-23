@@ -33,8 +33,10 @@ export default function StepTwo({ initialData, onNext, onPrevious }: any) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h2>Step 2: Personal Information</h2>
-      <div className="flex justify-between gap-4 flex-wrap">
+      <h2 className="text-lg font-semibold mb-4">
+        Step 2: Personal Information
+      </h2>
+      <div className="flex justify-start items-center gap-12 flex-wrap ml-6">
         <InputField
           label="First Name"
           name="firstName"
@@ -57,9 +59,9 @@ export default function StepTwo({ initialData, onNext, onPrevious }: any) {
           error={errors?.lastName}
         />
         <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Gender</label>
+          <label className="text-lg text-gray-500">Gender</label>
           <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-lg w-full"
             {...register("sex")}
             defaultValue={initialData?.sex}
           >
@@ -114,19 +116,21 @@ export default function StepTwo({ initialData, onNext, onPrevious }: any) {
         )}
       </div>
 
-      <button
-        type="button"
-        onClick={onPrevious}
-        className="bg-gray-500 text-white px-4 py-2 rounded"
-      >
-        Previous
-      </button>
-      <button
-        type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Next
-      </button>
+      <div className="flex gap-4">
+        <button
+          type="button"
+          onClick={onPrevious}
+          className="bg-gray-500 text-white px-4 py-2 rounded mt-8 text-lg hover:bg-gray-400"
+        >
+          Previous
+        </button>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded mt-8 text-lg hover:bg-blue-400"
+        >
+          Next
+        </button>
+      </div>
     </form>
   );
 }

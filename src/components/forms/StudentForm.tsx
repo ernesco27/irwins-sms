@@ -15,6 +15,8 @@ import { toast } from "react-toastify";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
+import StepFour from "./StepFour";
+import StepFive from "./StepFive";
 
 const StudentForm = ({
   type,
@@ -43,7 +45,7 @@ const StudentForm = ({
     },
   );
   const [img, setImg] = useState<any>();
-  const [step, setStep] = useState<any>(1);
+  const [step, setStep] = useState<any>(5);
   const [formData, setFormData] = useState(data || {});
 
   const handleNext = (stepData: any) => {
@@ -73,7 +75,7 @@ const StudentForm = ({
 
   return (
     <div className="flex flex-col gap-8" onSubmit={onSubmit}>
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-2xl font-semibold">
         {type === "update" ? "Update Student's Info" : "Add New Student"}
       </h1>
       {step === 1 && <StepOne initialData={formData} onNext={handleNext} />}
@@ -86,6 +88,22 @@ const StudentForm = ({
       )}
       {step === 3 && (
         <StepThree
+          initialData={formData}
+          onPrevious={handlePrevious}
+          onSubmit={handleSubmit}
+          relatedData={relatedData}
+        />
+      )}
+      {step === 4 && (
+        <StepFour
+          initialData={formData}
+          onPrevious={handlePrevious}
+          onSubmit={handleSubmit}
+          relatedData={relatedData}
+        />
+      )}
+      {step === 5 && (
+        <StepFive
           initialData={formData}
           onPrevious={handlePrevious}
           onSubmit={handleSubmit}
