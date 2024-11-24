@@ -17,6 +17,7 @@ import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepFour from "./StepFour";
 import StepFive from "./StepFive";
+import StepSix from "./StepSix";
 
 const StudentForm = ({
   type,
@@ -45,7 +46,7 @@ const StudentForm = ({
     },
   );
   const [img, setImg] = useState<any>();
-  const [step, setStep] = useState<any>(5);
+  const [step, setStep] = useState<any>(6);
   const [formData, setFormData] = useState(data || {});
 
   const handleNext = (stepData: any) => {
@@ -74,7 +75,7 @@ const StudentForm = ({
   const { classes, grades } = relatedData;
 
   return (
-    <div className="flex flex-col gap-8" onSubmit={onSubmit}>
+    <div className="flex flex-col gap-8 " onSubmit={onSubmit}>
       <h1 className="text-2xl font-semibold">
         {type === "update" ? "Update Student's Info" : "Add New Student"}
       </h1>
@@ -104,6 +105,14 @@ const StudentForm = ({
       )}
       {step === 5 && (
         <StepFive
+          initialData={formData}
+          onPrevious={handlePrevious}
+          onSubmit={handleSubmit}
+          relatedData={relatedData}
+        />
+      )}
+      {step === 6 && (
+        <StepSix
           initialData={formData}
           onPrevious={handlePrevious}
           onSubmit={handleSubmit}

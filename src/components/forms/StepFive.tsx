@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import InputField from "../InputField";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Divider } from "antd";
+import { Divider, message } from "antd";
 import Image from "next/image";
 
 const stepFiveSchema = z.object({
@@ -11,6 +11,11 @@ const stepFiveSchema = z.object({
   vaccineType: z.string().min(1, { message: "Type of Vaccine required!" }),
   vaccineDose: z.string().min(1, { message: "Dose of Vaccine required!" }),
   date: z.coerce.date({ message: "Date of Immunization is required!" }),
+  allergies: z.string().min(1, { message: "Allergy is required!" }),
+  healthConditions: z
+    .string()
+    .min(1, { message: "Health Condition is required!" }),
+  medications: z.string().min(1, { message: "Medication is required!" }),
 });
 
 type StepFiveSchema = z.infer<typeof stepFiveSchema>;
@@ -78,71 +83,50 @@ export default function StepFive({ initialData, onNext, onPrevious }: any) {
         <Divider style={{ borderColor: "#7cb305" }} orientation="left">
           Allergies
         </Divider>
-        <div className="flex flex-row justify-center items-center w-full">
-          <button
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-irwinYellow hover:bg-irwinYellowLight "
-            onClick={() => {}}
-          >
-            <Image src={`/create.png`} alt="" width={16} height={16} />
-          </button>
+        <div className="w-full flex flex-wrap gap-6 justify-center mb-8">
+          <textarea
+            defaultValue={initialData?.allergies}
+            {...register("allergies")}
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-lg w-full"
+          ></textarea>
+          {errors.allergies?.message && (
+            <p className="text-xs text-red-400">
+              {errors.allergies.message.toString()}
+            </p>
+          )}
         </div>
+
         <Divider style={{ borderColor: "#7cb305" }} orientation="left">
           Health Conditions
         </Divider>
-        <div className="flex flex-row justify-center items-center w-full">
-          <button
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-irwinYellow hover:bg-irwinYellowLight "
-            onClick={() => {}}
-          >
-            <Image src={`/create.png`} alt="" width={16} height={16} />
-          </button>
+        <div className="w-full flex flex-wrap gap-6 justify-center mb-8">
+          <textarea
+            defaultValue={initialData?.healthConditions}
+            {...register("healthConditions")}
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-lg w-full"
+          ></textarea>
+          {errors.healthConditions?.message && (
+            <p className="text-xs text-red-400">
+              {errors.healthConditions.message.toString()}
+            </p>
+          )}
         </div>
+
         <Divider style={{ borderColor: "#7cb305" }} orientation="left">
           Medications
         </Divider>
-        <div className="flex flex-row justify-center items-center w-full">
-          <button
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-irwinYellow hover:bg-irwinYellowLight "
-            onClick={() => {}}
-          >
-            <Image src={`/create.png`} alt="" width={16} height={16} />
-          </button>
+        <div className="w-full flex flex-wrap gap-6 justify-center mb-8">
+          <textarea
+            defaultValue={initialData?.medications}
+            {...register("medications")}
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-lg w-full"
+          ></textarea>
+          {errors.medications?.message && (
+            <p className="text-xs text-red-400">
+              {errors.medications.message.toString()}
+            </p>
+          )}
         </div>
-        {/* <InputField
-          label="Phone Number"
-          name="phoneNumber"
-          defaultValue={initialData?.phoneNumber}
-          register={register}
-          error={errors?.phoneNumber}
-        />
-        <InputField
-          label="Postal Address"
-          name="postalAddress"
-          defaultValue={initialData?.postalAddress}
-          register={register}
-          error={errors?.postalAddress}
-        />
-        <InputField
-          label="Residence Address"
-          name="residenceAddress"
-          defaultValue={initialData?.residenceAddress}
-          register={register}
-          error={errors?.residenceAddress}
-        />
-        <InputField
-          label="Digital Address"
-          name="digitalAddress"
-          defaultValue={initialData?.digitalAddress}
-          register={register}
-          error={errors?.digitalAddress}
-        />
-        <InputField
-          label="Email Address"
-          name="emailAddress"
-          defaultValue={initialData?.emailAddress}
-          register={register}
-          error={errors?.emailAddress}
-        /> */}
       </div>
 
       <div className="flex gap-4">
