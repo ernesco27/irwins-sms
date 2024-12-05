@@ -15,17 +15,36 @@ model Admin {
 }
 
 model Student {
-  id          String  @id
-  username    String  @unique
-  firstName   String
-  lastName    String
-  email       String?  @unique
-  phoneNumber String?  @unique
-  address     String
-  img         String?
-  bloodType   String
-  birthday    DateTime
+  id                        String  @id
+  username                  String  @unique
+  firstName                 String
+  lastName                  String
+  middleName                String?
+  email                     String?  @unique
+  phoneNumber               String?  @unique
+ 
+  img                       String?
+  bloodGroup                String
+  birthday                  DateTime
   sex UserSex
+
+  nationality               String
+  nationalId                String? @unique
+  postalAddress             String?
+  residenceAddress          String
+  digitalAddress            String
+  fullNameOfGuardian        String
+  relationOfGuardian        String
+  phoneNumberOfGuardian      String @unique
+  emailOfGuardian           String? @unique
+
+  vaccineName               String?
+  vaccineType               String?
+  vaccineDose               String?
+  vaccineDate               DateTime?
+  allergies                 String?
+  healthConditions          String?
+  medications               String?
   createdAt   DateTime @default(now())
 
   parentId    String

@@ -1,40 +1,44 @@
 "use client";
 
 import * as Clerk from "@clerk/elements/common";
-import * as SignIn from "@clerk/elements/sign-in";
+//import * as SignIn from "@clerk/elements/sign-in";
+import { SignIn } from "@clerk/nextjs";
 import Image from "next/image";
+// import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Spinner from "@/components/Spinner";
+// import Spinner from "@/components/Spinner";
 
 const LoginPage = () => {
   const { isLoaded, isSignedIn, user } = useUser();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  //   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const router = useRouter();
+  //const router = useRouter();
+  const role = user?.publicMetadata.role;
 
-  useEffect(() => {
-    const role = user?.publicMetadata.role;
+  // useEffect(() => {
+  //   const role = user?.publicMetadata.role;
+  //   console.log("role:", role);
 
-    if (role) {
-      router.push(`${role}`);
-    }
-  }, [user, router]);
+  //   if (role) {
+  //     router.push(`${role}`);
+  //   }
+  // }, [user, router]);
 
-  const handleSignInClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
+  //   const handleSignInClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //     e.preventDefault();
+  //     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  };
+  //     setTimeout(() => {
+  //       setIsLoading(false);
+  //     }, 3000);
+  //   };
 
   return (
     <div className="h-screen flex items-center justify-center bg-irwinSkyLight">
-      <SignIn.Root>
+      {/* <SignIn.Root>
         <SignIn.Step name="start" className="flex rounded-md shadow-2xl ">
           <div className="hidden md:block w-[650px] rounded-tr-3xl rounded-br-3xl overflow-hidden ">
             <Image src="/loginImage.png" alt="" width={800} height={800} />
@@ -80,7 +84,8 @@ const LoginPage = () => {
             </SignIn.Action>
           </div>
         </SignIn.Step>
-      </SignIn.Root>
+      </SignIn.Root> */}
+      <SignIn forceRedirectUrl={`${role}`} />
     </div>
   );
 };

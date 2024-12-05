@@ -49,6 +49,35 @@ export const teacherSchema = z.object({
 
 export type TeacherSchema = z.infer<typeof teacherSchema>;
 
+// export const studentSchema = z.object({
+//   id: z.string().optional(),
+//   username: z
+//     .string()
+//     .min(3, { message: "Username must be at least 3 characters long!" })
+//     .max(10, { message: "Username must be at most 10 characters long!" }),
+//   email: z
+//     .string()
+//     .email({ message: "Invalid email address!" })
+//     .optional()
+//     .or(z.literal("")),
+//   password: z
+//     .string()
+//     .min(8, { message: "Password must be at least 8 characters long!" })
+//     .optional()
+//     .or(z.literal("")),
+//   firstName: z.string().min(1, { message: "First Name is required!" }),
+//   lastName: z.string().min(1, { message: "Last Name is required!" }),
+//   phoneNumber: z.string().optional(),
+//   address: z.string().min(1, { message: "Address is required!" }),
+//   birthDay: z.coerce.date({ message: "Date of Birth is required!" }),
+//   sex: z.enum(["MALE", "FEMALE"], { message: "Sex is required!" }),
+//   img: z.string().optional(),
+//   bloodType: z.string().min(1, { message: "Blood Type is required!" }),
+//   gradeId: z.coerce.number().min(1, { message: "Grade is required!" }),
+//   classId: z.coerce.number().min(1, { message: "Class is required!" }),
+//   parentId: z.string().min(1, { message: "Parent is required!" }),
+// });
+
 export const studentSchema = z.object({
   id: z.string().optional(),
   username: z
@@ -67,18 +96,122 @@ export const studentSchema = z.object({
     .or(z.literal("")),
   firstName: z.string().min(1, { message: "First Name is required!" }),
   lastName: z.string().min(1, { message: "Last Name is required!" }),
+  middleName: z.string().optional(),
   phoneNumber: z.string().optional(),
-  address: z.string().min(1, { message: "Address is required!" }),
+  nationality: z.string().min(1, { message: "Nationality is required!" }),
+  nationalId: z.string().min(1, { message: "National ID is required!" }),
+  postalAddress: z.string().optional(),
+  residenceAddress: z
+    .string()
+    .min(1, { message: "Residence Address is required!" }),
+  digitalAddress: z
+    .string()
+    .min(1, { message: "Digital Address is required!" }),
+
   birthDay: z.coerce.date({ message: "Date of Birth is required!" }),
   sex: z.enum(["MALE", "FEMALE"], { message: "Sex is required!" }),
   img: z.string().optional(),
-  bloodType: z.string().min(1, { message: "Blood Type is required!" }),
+  bloodGroup: z.string().min(1, { message: "Blood Group is required!" }),
+  fullNameOfGuardian: z.string().min(1, { message: "Full Name is required!" }),
+  relationOfGuardian: z.string().min(1, { message: "Relation is required!" }),
+  phoneNumberOfGuardian: z
+    .string()
+    .min(1, { message: "Phone Number is required!" }),
+  emailOfGuardian: z
+    .string()
+    .email({ message: "Invalid email address!" })
+    .optional()
+    .or(z.literal("")),
   gradeId: z.coerce.number().min(1, { message: "Grade is required!" }),
   classId: z.coerce.number().min(1, { message: "Class is required!" }),
   parentId: z.string().min(1, { message: "Parent is required!" }),
+
+  vaccineName: z.string().min(1, { message: "Name of Vaccine required!" }),
+  vaccineType: z.string().min(1, { message: "Type of Vaccine required!" }),
+  vaccineDose: z.string().min(1, { message: "Dose of Vaccine required!" }),
+  vaccineDate: z.coerce.date({ message: "Date of Immunization is required!" }),
+  allergies: z.string().min(1, { message: "Allergy is required!" }),
+  healthConditions: z
+    .string()
+    .min(1, { message: "Health Condition is required!" }),
+  medications: z.string().min(1, { message: "Medication is required!" }),
 });
 
 export type StudentSchema = z.infer<typeof studentSchema>;
+
+export const studentStepSchemas = {
+  1: z.object({
+    id: z.string().optional(),
+    username: z
+      .string()
+      .min(3, { message: "Username must be at least 3 characters long!" })
+      .max(10, { message: "Username must be at most 10 characters long!" }),
+    email: z
+      .string()
+      .email({ message: "Invalid email address!" })
+      .optional()
+      .or(z.literal("")),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long!" })
+      .optional()
+      .or(z.literal("")),
+  }),
+
+  2: z.object({
+    firstName: z.string().min(1, { message: "First Name is required!" }),
+    lastName: z.string().min(1, { message: "Last Name is required!" }),
+    middleName: z.string().optional(),
+    birthDay: z.coerce.date({ message: "Date of Birth is required!" }),
+    sex: z.enum(["MALE", "FEMALE"], { message: "Sex is required!" }),
+    parentId: z.string().min(1, { message: "Parent is required!" }),
+    nationality: z.string().min(1, { message: "Nationality is required!" }),
+    nationalId: z.string().min(1, { message: "National ID is required!" }),
+  }),
+  3: z.object({
+    phoneNumber: z.string().optional(),
+    postalAddress: z.string().optional(),
+    residenceAddress: z
+      .string()
+      .min(1, { message: "Residence Address is required!" }),
+    digitalAddress: z
+      .string()
+      .min(1, { message: "Digital Address is required!" }),
+  }),
+  4: z.object({
+    fullNameOfGuardian: z
+      .string()
+      .min(1, { message: "Full Name is required!" }),
+    relationOfGuardian: z.string().min(1, { message: "Relation is required!" }),
+    phoneNumberOfGuardian: z
+      .string()
+      .min(1, { message: "Phone Number is required!" }),
+    emailOfGuardian: z
+      .string()
+      .email({ message: "Invalid email address!" })
+      .optional()
+      .or(z.literal("")),
+  }),
+  5: z.object({
+    bloodGroup: z.string().min(1, { message: "Blood Group is required!" }),
+    vaccineName: z.string().min(1, { message: "Name of Vaccine required!" }),
+    vaccineType: z.string().min(1, { message: "Type of Vaccine required!" }),
+    vaccineDose: z.string().min(1, { message: "Dose of Vaccine required!" }),
+    vaccineDate: z.coerce.date({
+      message: "Date of Immunization is required!",
+    }),
+    allergies: z.string().min(1, { message: "Allergy is required!" }),
+    healthConditions: z
+      .string()
+      .min(1, { message: "Health Condition is required!" }),
+    medications: z.string().min(1, { message: "Medication is required!" }),
+  }),
+  6: z.object({
+    img: z.string().optional(),
+    gradeId: z.coerce.number().min(1, { message: "Grade is required!" }),
+    classId: z.coerce.number().min(1, { message: "Class is required!" }),
+  }),
+};
 
 export const examSchema = z.object({
   id: z.number().optional(),
