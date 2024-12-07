@@ -314,9 +314,13 @@ export const createStudent = async (
     });
 
     return { success: true, error: false };
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
-    return { success: false, error: true };
+
+    return {
+      success: false,
+      error: true,
+    };
   }
 };
 
