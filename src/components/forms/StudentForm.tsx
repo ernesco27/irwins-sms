@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 
 import { Divider } from "antd";
 import { DevTool } from "@hookform/devtools";
+import Summary from "./Summary";
 
 const StudentForm = ({
   type,
@@ -37,7 +38,7 @@ const StudentForm = ({
   setOpen: Dispatch<SetStateAction<boolean>>;
   relatedData?: any;
 }) => {
-  const [step, setStep] = useState<any>(1);
+  const [step, setStep] = useState<any>(7);
 
   const {
     register,
@@ -66,6 +67,8 @@ const StudentForm = ({
 
   const [img, setImg] = useState<any>();
   const [formData, setFormData] = useState<any>();
+
+  const [errorMessages, setErrorMessages] = useState<any>([]);
 
   useEffect(() => {
     console.log(formData);
@@ -102,7 +105,7 @@ const StudentForm = ({
 
   const onSubmit = handleSubmit((data) => {
     const completeData = { ...data, img: img?.secure_url };
-    console.log("data:", completeData);
+    //console.log("data:", completeData);
 
     formAction(completeData);
   });
@@ -117,6 +120,13 @@ const StudentForm = ({
       setOpen(false);
       router.refresh();
     }
+
+    // if (state.error) {
+    //   // Show the error message if it exists
+    //   toast.error(
+    //     state.message || "An error occurred while creating the student.",
+    //   );
+    // }
   }, [state, router, type, setOpen]);
 
   const { classes, grades } = relatedData;
@@ -522,13 +532,7 @@ const StudentForm = ({
             </div>
           </div>
         )}
-        {step === 7 && (
-          <div>
-            <h2 className="text-lg font-semibold mb-4">
-              Step 7: Review and Submit
-            </h2>
-          </div>
-        )}
+        {step === 7 && <Summary formData={formData} />}
 
         <div className="flex justify-between">
           {step > 1 && (
