@@ -38,7 +38,7 @@ const StudentForm = ({
   setOpen: Dispatch<SetStateAction<boolean>>;
   relatedData?: any;
 }) => {
-  const [step, setStep] = useState<any>(7);
+  const [step, setStep] = useState<any>(1);
 
   const {
     register,
@@ -532,7 +532,7 @@ const StudentForm = ({
             </div>
           </div>
         )}
-        {step === 7 && <Summary formData={formData} />}
+        {step === 7 && <Summary formData={formData} img={img} />}
 
         <div className="flex justify-between">
           {step > 1 && (
