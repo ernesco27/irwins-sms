@@ -237,7 +237,7 @@ const FormModal = ({
       </button>
       {open && (
         <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center overflow-scroll md:py-10">
-          <div className="bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[70%] xl:w-[70%] 2xl:w-[50%] ">
+          <div className="bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[70%] xl:w-[70%] 2xl:w-[50%] h-full overflow-scroll ">
             <Form />
             <div
               className="absolute top-4 right-4 cursor-pointer"
