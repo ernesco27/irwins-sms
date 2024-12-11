@@ -161,7 +161,27 @@ const Summary = ({ formData, img }: { formData: any; img: any }) => {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white hover:bg-gray-100 transition-colors">
+            {formData?.immunizationRecords.map((record: any, i: any) => (
+              <tr
+                key={record.i}
+                className="bg-white hover:bg-gray-100 transition-colors"
+              >
+                <td className="p-2 border-b border-gray-200">
+                  {record.vaccineName || "---"}
+                </td>
+                <td className="p-2 border-b border-gray-200">
+                  {record.vaccineType || "---"}
+                </td>
+                <td className="p-2 border-b border-gray-200">
+                  {record.vaccineDose || "---"}
+                </td>
+                <td className="p-2 border-b border-gray-200">
+                  {record.vaccineDate.toISOString().split("T")[0] || "---"}
+                </td>
+              </tr>
+            ))}
+
+            {/* <tr className="bg-white hover:bg-gray-100 transition-colors">
               <td className="p-2 border-b border-gray-200">
                 {formData?.vaccineName || "---"}
               </td>
@@ -174,7 +194,7 @@ const Summary = ({ formData, img }: { formData: any; img: any }) => {
               <td className="p-2 border-b border-gray-200">
                 {formData?.vaccineDate.toISOString().split("T")[0] || "---"}
               </td>
-            </tr>
+            </tr> */}
           </tbody>
         </table>
       </div>

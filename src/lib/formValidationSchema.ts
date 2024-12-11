@@ -78,6 +78,17 @@ export type TeacherSchema = z.infer<typeof teacherSchema>;
 //   parentId: z.string().min(1, { message: "Parent is required!" }),
 // });
 
+const immunizationRecordSchema = z.object({
+  vaccineName: z.string().optional(),
+  vaccineType: z.string().optional(),
+  vaccineDose: z.string().optional(),
+  vaccineDate: z
+    .string()
+    .transform((val) => (val ? new Date(val) : null))
+    .nullable()
+    .optional(),
+});
+
 export const studentSchema = z.object({
   id: z.string().optional(),
   username: z
@@ -112,6 +123,7 @@ export const studentSchema = z.object({
   sex: z.enum(["MALE", "FEMALE"], { message: "Sex is required!" }),
   img: z.string().optional(),
   bloodGroup: z.string().min(1, { message: "Blood Group is required!" }),
+  sickling: z.string().min(1, { message: "Sickling is required!" }),
   fullNameOfGuardian: z.string().min(1, { message: "Full Name is required!" }),
   relationOfGuardian: z.string().min(1, { message: "Relation is required!" }),
   phoneNumberOfGuardian: z
@@ -124,12 +136,12 @@ export const studentSchema = z.object({
     .or(z.literal("")),
   gradeId: z.coerce.number().min(1, { message: "Grade is required!" }),
   classId: z.coerce.number().min(1, { message: "Class is required!" }),
+
   parentId: z.string().min(1, { message: "Parent is required!" }),
 
-  vaccineName: z.string().min(1, { message: "Name of Vaccine required!" }),
-  vaccineType: z.string().min(1, { message: "Type of Vaccine required!" }),
-  vaccineDose: z.string().min(1, { message: "Dose of Vaccine required!" }),
-  vaccineDate: z.coerce.date({ message: "Date of Immunization is required!" }),
+  immunizationRecords: z
+    .array(immunizationRecordSchema)
+    .min(1, "At least one immunization record is required"),
   allergies: z.string().min(1, { message: "Allergy is required!" }),
   healthConditions: z
     .string()
@@ -194,12 +206,10 @@ export const studentStepSchemas = {
   }),
   5: z.object({
     bloodGroup: z.string().min(1, { message: "Blood Group is required!" }),
-    vaccineName: z.string().min(1, { message: "Name of Vaccine required!" }),
-    vaccineType: z.string().min(1, { message: "Type of Vaccine required!" }),
-    vaccineDose: z.string().min(1, { message: "Dose of Vaccine required!" }),
-    vaccineDate: z.coerce.date({
-      message: "Date of Immunization is required!",
-    }),
+    sickling: z.string().min(1, { message: "Sickling is required!" }),
+
+    immunizationRecords: z.array(immunizationRecordSchema).optional(),
+
     allergies: z.string().min(1, { message: "Allergy is required!" }),
     healthConditions: z
       .string()

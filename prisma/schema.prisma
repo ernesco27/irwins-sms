@@ -25,6 +25,7 @@ model Student {
  
   img                       String?
   bloodGroup                String
+  sickling                  String
   birthday                  DateTime
   sex UserSex
 
@@ -37,14 +38,11 @@ model Student {
   relationOfGuardian        String
   phoneNumberOfGuardian      String @unique
   emailOfGuardian           String? @unique
-
-  vaccineName               String?
-  vaccineType               String?
-  vaccineDose               String?
-  vaccineDate               DateTime?
+  immunizationRecords       Json
   allergies                 String?
   healthConditions          String?
   medications               String?
+
   createdAt   DateTime @default(now())
 
   parentId    String

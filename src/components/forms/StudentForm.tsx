@@ -49,13 +49,6 @@ const StudentForm = ({
   } = useForm<StudentSchema>({
     resolver: zodResolver(studentSchema),
   });
-  //   {
-  //   resolver: zodResolver(
-  //     step === 7
-  //       ? z.void()
-  //       : studentStepSchemas[step as keyof typeof studentStepSchemas],
-  //   ),
-  // }
 
   const [state, formAction] = useFormState(
     type == "create" ? createStudent : updateStudent,
@@ -69,6 +62,22 @@ const StudentForm = ({
   const [formData, setFormData] = useState<any>();
 
   const [errorMessages, setErrorMessages] = useState<any>([]);
+  const [immunizationRecords, setImmunizationRecords] = useState<any[]>([
+    { vaccineName: "", vaccineType: "", vaccineDose: "", vaccineDate: "" },
+  ]);
+
+  const handleAddImmunizationRecord = () => {
+    setImmunizationRecords((prevRecords) => [
+      ...prevRecords,
+      { vaccineName: "", vaccineType: "", vaccineDose: "", vaccineDate: "" },
+    ]);
+  };
+
+  const handleRemoveImmunizationRecord = (index: number) => {
+    setImmunizationRecords((prevRecords) =>
+      prevRecords.filter((_, i) => i !== index),
+    );
+  };
 
   useEffect(() => {
     console.log(formData);
@@ -335,51 +344,74 @@ const StudentForm = ({
               Step 5: Medical History
             </h2>
             <div className="flex justify-between gap-4 flex-wrap">
-              <InputField
-                label="Blood Group"
-                name="bloodGroup"
-                defaultValue={data?.bloodGroup}
-                register={register}
-                //error={errors?.bloodGroup}
-              />
+              <div className="flex justify-between items-center w-full">
+                <InputField
+                  label="Blood Group"
+                  name="bloodGroup"
+                  defaultValue={data?.bloodGroup}
+                  register={register}
+                  //error={errors?.bloodGroup}
+                />
+                <InputField
+                  label="Sickling"
+                  name="sickling"
+                  defaultValue={data?.sickling}
+                  register={register}
+                  //error={errors?.bloodGroup}
+                />
+              </div>
+
               <Divider style={{ borderColor: "#7cb305" }} orientation="left">
                 Immunization Records
               </Divider>
-              <div className="flex flex-col  justify-center items-center w-full">
-                <div className="w-full flex flex-wrap gap-12 justify-center mb-8">
-                  <InputField
-                    label="Vaccine Name"
-                    name="vaccineName"
-                    defaultValue={data?.vaccineName}
-                    register={register}
-                    //error={errors?.vaccineName}
-                  />
-                  <InputField
-                    label="Vaccine Type"
-                    name="vaccineType"
-                    defaultValue={data?.vaccineType}
-                    register={register}
-                    //error={errors?.vaccineType}
-                  />
-                  <InputField
-                    label="Vaccine Dose"
-                    name="vaccineDose"
-                    defaultValue={data?.vaccineDose}
-                    register={register}
-                    //error={errors?.vaccineDose}
-                  />
-                  <InputField
-                    label="Date Administered"
-                    name="vaccineDate"
-                    defaultValue={data?.vaccineDate.toISOString().split("T")[0]}
-                    register={register}
-                    //error={errors?.vaccineDate}
-                    type="date"
-                  />
-                </div>
+
+              <div className="flex flex-col justify-center items-center w-full">
+                {immunizationRecords.map((record, index) => (
+                  <div
+                    key={index}
+                    className="w-full flex flex-wrap gap-12 justify-center mb-8"
+                  >
+                    <InputField
+                      label="Vaccine Name"
+                      name={`immunizationRecords[${index}].vaccineName`}
+                      defaultValue={record.vaccineName}
+                      register={register}
+                    />
+                    <InputField
+                      label="Vaccine Type"
+                      name={`immunizationRecords[${index}].vaccineType`}
+                      defaultValue={record.vaccineType}
+                      register={register}
+                    />
+                    <InputField
+                      label="Vaccine Dose"
+                      name={`immunizationRecords[${index}].vaccineDose`}
+                      defaultValue={record.vaccineDose}
+                      register={register}
+                    />
+                    <InputField
+                      label="Date Administered"
+                      name={`immunizationRecords[${index}].vaccineDate`}
+                      defaultValue={record.vaccineDate}
+                      register={register}
+                      type="date"
+                    />
+                    {immunizationRecords.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImmunizationRecord(index)}
+                        className="text-red-500"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                ))}
+
                 <button
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-irwinYellow hover:bg-irwinYellowLight "
-                  onClick={() => {}}
+                  type="button"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-irwinYellow hover:bg-irwinYellowLight"
+                  onClick={handleAddImmunizationRecord}
                 >
                   <Image src={`/create.png`} alt="" width={16} height={16} />
                 </button>

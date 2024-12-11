@@ -275,6 +275,7 @@ export const createStudent = async (
       password: data.password,
       firstName: data.firstName,
       lastName: data.lastName,
+
       publicMetadata: { role: "student" },
     });
 
@@ -289,6 +290,7 @@ export const createStudent = async (
         phoneNumber: data.phoneNumber,
         img: data.img,
         bloodGroup: data.bloodGroup,
+        sickling: data.sickling,
         birthday: data.birthDay,
         sex: data.sex,
         nationality: data.nationality,
@@ -300,10 +302,7 @@ export const createStudent = async (
         relationOfGuardian: data.relationOfGuardian,
         phoneNumberOfGuardian: data.phoneNumberOfGuardian,
         emailOfGuardian: data.emailOfGuardian,
-        vaccineName: data.vaccineName,
-        vaccineType: data.vaccineType,
-        vaccineDose: data.vaccineDose,
-        vaccineDate: data.vaccineDate,
+        immunizationRecords: data.immunizationRecords,
         allergies: data.allergies,
         healthConditions: data.healthConditions,
         medications: data.medications,
@@ -342,6 +341,8 @@ export const updateStudent = async (
         phoneNumber: data.phoneNumber,
         img: data.img,
         bloodGroup: data.bloodGroup,
+        sickling: data.sickling,
+
         birthday: data.birthDay,
         sex: data.sex,
         nationality: data.nationality,
@@ -353,10 +354,9 @@ export const updateStudent = async (
         relationOfGuardian: data.relationOfGuardian,
         phoneNumberOfGuardian: data.phoneNumberOfGuardian,
         emailOfGuardian: data.emailOfGuardian,
-        vaccineName: data.vaccineName,
-        vaccineType: data.vaccineType,
-        vaccineDose: data.vaccineDose,
-        vaccineDate: data.vaccineDate,
+
+        immunizationRecords: data.immunizationRecords,
+
         allergies: data.allergies,
         healthConditions: data.healthConditions,
         medications: data.medications,

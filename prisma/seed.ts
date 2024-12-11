@@ -127,23 +127,27 @@ async function main() {
         residenceAddress: `resAddress${i}`,
         digitalAddress: `digAddress${i}`,
         bloodGroup: "O-",
+        sickling: "AA",
         sex: i % 2 === 0 ? UserSex.MALE : UserSex.FEMALE,
         fullNameOfGuardian: `gFirstName ${i} gLastName ${i}`,
         relationOfGuardian: "Father",
         phoneNumberOfGuardian: `787-654-321${i}`,
         emailOfGuardian: `email${i}@email.com`,
-        vaccineName: "",
-        vaccineType: "",
-        vaccineDate: new Date(
-          new Date().setFullYear(new Date().getFullYear() - 10),
-        ),
-        vaccineDose: "",
+        immunizationRecords: [
+          {
+            vaccine: "BCG",
+            VaccineType: "Covid",
+            vaccineDose: "2",
+            vaccineDate: new Date("2024-11-02"),
+          },
+        ],
         allergies: "None",
         healthConditions: "None",
         medications: "None",
         parentId: `parentId${Math.ceil(i / 2) % 25 || 25}`,
         gradeId: (i % 6) + 1,
         classId: (i % 6) + 1,
+
         birthday: new Date(
           new Date().setFullYear(new Date().getFullYear() - 10),
         ),
