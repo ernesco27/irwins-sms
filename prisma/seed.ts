@@ -227,6 +227,24 @@ async function main() {
     });
   }
 
+  // DISCIPLINARY HISTOTY
+  for (let i = 1; i <= 5; i++) {
+    await prisma.disciplinaryHistory.create({
+      data: {
+        title: `Offense ${i}`,
+        description: `Description for offense ${i}`,
+        incidentDate: new Date(),
+        reportDate: new Date(),
+        incidentLocation: `Location ${i}`,
+        incidentType: "Vandalism",
+        disciplinaryAction: "suspension",
+
+        studentId: `student${i}`,
+        classId: (i % 5) + 1,
+      },
+    });
+  }
+
   console.log("Seeding completed successfully.");
 }
 
