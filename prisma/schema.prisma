@@ -55,6 +55,7 @@ model Student {
 
   attendance  Attendance[]
   results     Result[]
+  disciplinaryHistory   DisciplinaryHistory[]
 }
 
  model Teacher{
@@ -112,6 +113,7 @@ model Student {
   lessons       Lesson[]
   events        Event[]
   announcements Announcement[]
+  disciplinaryHistory   DisciplinaryHistory[]
   
  
 
@@ -225,6 +227,26 @@ model Student {
     classId       Int?
     class Class? @relation(fields: [classId], references: [id])
   }
+
+
+    model DisciplinaryHistory{
+    id                        Int @id @default(autoincrement())
+    title                     String
+    description               String
+    incidentDate              DateTime
+    reportDate                DateTime
+    incidentLocation          String
+    incidentType              String
+    disciplinaryAction        String
+
+
+    studentId                 String
+    student                   Student? @relation(fields: [studentId], references: [id])
+
+    classId                   Int?
+    class                     Class? @relation(fields: [classId], references: [id])
+  }
+
 
 
 
