@@ -1,6 +1,7 @@
 import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalendar";
 import BigCalendarContainer from "@/components/BigCalendarContainer";
+import DisciplinaryHistory from "@/components/DisciplinaryHistory";
 import FormContainer from "@/components/FormContainer";
 import FormModal from "@/components/FormModal";
 import Performance from "@/components/Performance";
@@ -54,7 +55,7 @@ const SingleStudentPage = async ({
             </div>
             <div className="w-2/3 flex flex-col justify-between gap-4 ">
               <div className="flex items-center gap-4">
-                <h1 className="text-xl font-semibold">{`${student.firstName} ${student.lastName}`}</h1>
+                <h1 className="text-xl font-semibold">{`${student.firstName} ${student.middleName} ${student.lastName}`}</h1>
                 <FormContainer table="student" type="update" data={student} />
               </div>
               <p className="text-sm text-gray-500">
@@ -63,7 +64,7 @@ const SingleStudentPage = async ({
               <div className="flex items-center justify-between gap-2 flex-wrap text-xs font-medium">
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image src="/blood.png" alt="" width={14} height={14} />
-                  <span>{student.bloodType}</span>
+                  <span>{student.bloodGroup}</span>
                 </div>
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image src="/date.png" alt="" width={14} height={14} />
@@ -163,31 +164,31 @@ const SingleStudentPage = async ({
           <div className="mt-4  flex gap-4 flex-wrap text-xs text-gray-500">
             <Link
               className="p-3 rounded-md bg-irwinSkyLight"
-              href={`/list/lessons?classId=${1}`}
+              href={`/list/lessons?classId=${student.class.id}`}
             >
               Student's Lessons
             </Link>
             <Link
               className="p-3 rounded-md bg-irwinPurpleLight"
-              href={`/list/teachers?classId=${1}`}
+              href={`/list/teachers?classId=${student.class.id}`}
             >
               Student's Teachers
             </Link>
             <Link
               className="p-3 rounded-md bg-irwinYellowLight "
-              href={`/list/exams?classId=${1}`}
+              href={`/list/exams?classId=${student.class.id}`}
             >
               Student's Exams
             </Link>
             <Link
               className="p-3 rounded-md bg-pink-50"
-              href={`/list/assignments?classId=${1}`}
+              href={`/list/assignments?classId=${student.class.id}`}
             >
               Student's Assignments
             </Link>
             <Link
               className="p-3 rounded-md bg-irwinSkyLight"
-              href={`/list/results?studentId=${"student1"}`}
+              href={`/list/results?studentId=${student.id}`}
             >
               Student's Results
             </Link>
@@ -195,6 +196,7 @@ const SingleStudentPage = async ({
         </div>
         <Performance />
         <Announcements />
+        <DisciplinaryHistory />
       </div>
     </div>
   );

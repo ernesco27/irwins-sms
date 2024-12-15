@@ -1,6 +1,7 @@
 import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalendar";
 import BigCalendarContainer from "@/components/BigCalendarContainer";
+import DisciplinaryHistory from "@/components/DisciplinaryHistory";
 import EventCalendar from "@/components/EventCalendar";
 import EventCalendarContainer from "@/components/EventCalendarContainer";
 import prisma from "@/lib/prisma";
@@ -41,6 +42,7 @@ const StudentPage = async ({
         <div className="w-full xl:w-1/3 flex flex-col gap-8">
           <EventCalendarContainer searchParams={searchParams} />
           <Announcements />
+          <DisciplinaryHistory />
         </div>
       </div>
     </div>
