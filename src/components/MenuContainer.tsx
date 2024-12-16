@@ -89,6 +89,12 @@ const menuItems = [
         href: "/list/announcements",
         visible: ["admin", "teacher", "student", "parent"],
       },
+      {
+        icon: "/announcement.png",
+        label: "Discipline",
+        href: "/list/discipline",
+        visible: ["admin", "teacher"],
+      },
     ],
   },
   {

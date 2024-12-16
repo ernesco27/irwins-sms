@@ -15,6 +15,7 @@ import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 import { FormContainerProps } from "./FormContainer";
 import Spinner from "./Spinner";
+import DisciplineForm from "./forms/DisciplineForm";
 
 const deleteActionMap = {
   subject: deleteSubject,
@@ -29,6 +30,7 @@ const deleteActionMap = {
   lesson: deleteSubject,
   assignment: deleteSubject,
   attendance: deleteSubject,
+  DisciplinaryHistory: deleteSubject,
 };
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
@@ -169,6 +171,14 @@ const forms: {
   ),
   subject: (setOpen, type, data, relatedData) => (
     <SubjectForm
+      setOpen={setOpen}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
+  ),
+  discipline: (setOpen, type, data, relatedData) => (
+    <DisciplineForm
       setOpen={setOpen}
       type={type}
       data={data}

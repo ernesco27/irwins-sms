@@ -15,7 +15,8 @@ export type FormContainerProps = {
     | "result"
     | "attendance"
     | "event"
-    | "announcement";
+    | "announcement"
+    | "discipline";
   type: "create" | "update" | "delete";
   data?: any;
   id?: number | string;
@@ -77,6 +78,12 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
         });
         relatedData = { lessons: examLessons };
 
+        break;
+      case "discipline":
+        const disciplinary = await prisma.disciplinaryHistory.findMany({
+          select: { id: true, incidentType: true },
+        });
+        relatedData = { discipline: disciplinary };
         break;
 
       default:
