@@ -52,7 +52,7 @@ const DisciplinaryHistory = async () => {
               } rounded-md p-4`}
             >
               <div className="flex items-center justify-between">
-                <h2 className="font-medium">{record.title}</h2>
+                <h2 className="font-medium">{record.offense}</h2>
                 <span className="text-xs text-gray-400 bg-white rounded-md px-1 py-1">
                   {new Intl.DateTimeFormat("en-GB").format(
                     new Date(record.incidentDate),

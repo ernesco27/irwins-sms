@@ -38,8 +38,8 @@ const columns = [
   },
 
   {
-    header: "Incident Type",
-    accessor: "incidentType",
+    header: "Offense",
+    accessor: "offense",
     className: "hidden lg:table-cell",
   },
 
@@ -80,7 +80,7 @@ const DisciplinaryHistoryPage = async ({
       <td className="hidden md:table-cell">
         {new Intl.DateTimeFormat("en-us").format(item.reportDate)}
       </td>
-      <td className="hidden md:table-cell">{item.incidentType}</td>
+      <td className="hidden md:table-cell">{item.offense}</td>
       <td>
         <div className="flex items-center gap-2">
           <Link href={`/list/students/${item.id}`}>
@@ -118,7 +118,7 @@ const DisciplinaryHistoryPage = async ({
             };
             break;
           case "search":
-            query.incidentType = { contains: value, mode: "insensitive" };
+            query.offense = { contains: value, mode: "insensitive" };
             break;
           default:
             break;

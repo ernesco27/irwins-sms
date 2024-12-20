@@ -6,7 +6,14 @@ import { z } from "zod";
 import InputField from "../InputField";
 import Image from "next/image";
 import { disciplineSchema, DisciplineSchema } from "@/lib/formValidationSchema";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { useFormState } from "react-dom";
+import {
+  createDisciplinaryRecord,
+  updateDisciplinaryRecord,
+} from "@/lib/action";
 
 const DisciplineForm = ({
   type,
@@ -27,12 +34,16 @@ const DisciplineForm = ({
     resolver: zodResolver(disciplineSchema),
   });
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-  });
+  const [state, formAction] = useFormState(
+    type == "create" ? createDisciplinaryRecord : updateDisciplinaryRecord,
+    {
+      success: false,
+      error: false,
+    },
+  );
 
   const incidentTypes = [
-    "Examination malpractices",
+    "Examination malpractice",
     "Theft",
     "Vandalism",
     "Fighting",
@@ -46,6 +57,41 @@ const DisciplineForm = ({
     "Dismissal",
   ];
 
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.success) {
+      toast(
+        `Disciplinary Record ${
+          type === "create" ? "Created" : "updated"
+        } successfully`,
+      );
+      setOpen(false);
+      router.refresh();
+    }
+
+    // if (state.error) {
+    //   // Show the error message if it exists
+    //   toast.error(
+    //     state.message || "An error occurred while creating the student.",
+    //   );
+    // }
+  }, [state, router, type, setOpen]);
+
+  const onSubmit = handleSubmit(
+    (data) => {
+      console.log(data);
+      //formAction(data);
+    },
+    (errors) => {
+      Object.values(errors).forEach((error) => {
+        toast.error(error.message);
+      });
+    },
+  );
+
+  const { classes } = relatedData;
+
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">
@@ -54,7 +100,7 @@ const DisciplineForm = ({
           : "Add New Disciplinary Record"}
       </h1>
 
-      <span className="text-xs text-gray-400 font-medium ">
+      <span className="text-lg text-gray-400 font-medium ">
         Disciplinary Record
       </span>
       <div className="flex justify-between gap-4 flex-wrap">
@@ -63,80 +109,90 @@ const DisciplineForm = ({
           name="studentId"
           defaultValue={data?.studentId}
           register={register}
-          error={errors?.studentId}
+          //error={errors?.studentId}
         />
-        <InputField
-          label="Title"
-          name="title"
-          defaultValue={data?.title}
-          register={register}
-          error={errors?.title}
-        />
-        <InputField
-          label="Class"
-          name="class"
-          defaultValue={data?.classId}
-          register={register}
-          error={errors?.classId}
-        />
-        <InputField
-          label="Incident Date"
-          name="incidentDate"
-          defaultValue={data?.incidentDate}
-          register={register}
-          error={errors?.incidentDate}
-          type="date"
-        />
-        <InputField
-          label="Report Date"
-          name="reportDate"
-          defaultValue={data?.reportDate}
-          register={register}
-          error={errors?.reportDate}
-        />
+        <div className="flex flex-col gap-2 w-full md:w-2/5">
+          <label className="text-lg text-gray-500">Class</label>
+          <select
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            {...register("classId")}
+            defaultValue={data?.classId}
+          >
+            {classes.map((studentClass: { id: number; name: string }) => (
+              <option value={studentClass.id} key={studentClass.id}>
+                {studentClass.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className={"flex flex-col gap-2 w-full md:w-2/5"}>
+          <label className="text-lg text-gray-500">Offense</label>
+          <select
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            {...register("offense")}
+            defaultValue={data?.offense}
+          >
+            {incidentTypes.map((incident, index) => (
+              <option value={incident} key={index}>
+                {incident}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <InputField
           label="Incident Location"
           name="incidentLocation"
           defaultValue={data?.incidentLocation}
           register={register}
-          error={errors?.incidentLocation}
+          // error={errors?.incidentLocation}
         />
-        <div className="w-full flex flex-wrap gap-6 justify-center mb-8">
+
+        <InputField
+          label="Incident Date"
+          name="incidentDate"
+          defaultValue={data?.incidentDate.toISOString().split("T")[0]}
+          register={register}
+          // error={errors?.incidentDate}
+          type="date"
+        />
+        <InputField
+          label="Report Date"
+          name="reportDate"
+          defaultValue={data?.reportDate.toISOString().split("T")[0]}
+          register={register}
+          // error={errors?.reportDate}
+          type="date"
+        />
+
+        <div className="w-full flex flex-wrap gap-6 mt-4 mb-4">
+          <label className="text-lg text-gray-500">Incident Descriptiton</label>
           <textarea
             defaultValue={data?.description}
             {...register("description")}
             className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-lg w-full"
           ></textarea>
-          {errors.description?.message && (
+          {/* {errors.description?.message && (
             <p className="text-xs text-red-400">
               {errors.description.message.toString()}
             </p>
-          )}
+          )} */}
         </div>
-        <label className="text-lg text-gray-500">Incident Type</label>
-        <select
-          className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-          {...register("incidentType")}
-          defaultValue={data?.incidentType}
-        >
-          {incidentTypes.map((incident, index) => (
-            <option value={incident} key={index}>
-              {incident}
-            </option>
-          ))}
-        </select>
-        <label className="text-lg text-gray-500">Disciplinary Action</label>
-        <select
-          className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-          {...register("disciplinaryAction")}
-          defaultValue={data?.disciplinaryAction}
-        >
-          {action.map((act, index) => (
-            <option value={act} key={index}>
-              {act}
-            </option>
-          ))}
-        </select>
+
+        <div className="flex flex-col gap-2 w-full md:w-2/5">
+          <label className="text-lg text-gray-500">Disciplinary Action</label>
+          <select
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            {...register("disciplinaryAction")}
+            defaultValue={data?.disciplinaryAction}
+          >
+            {action.map((act, index) => (
+              <option value={act} key={index}>
+                {act}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <button className="bg-blue-400 text-white p-2 rounded-md">

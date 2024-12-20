@@ -224,12 +224,11 @@ export const studentStepSchemas = {
 };
 
 export const disciplineSchema = z.object({
-  id: z.string().optional(),
-  title: z.string().min(1, { message: "Title is required!" }),
+  id: z.number().optional(),
+  offense: z.string().min(1, { message: "Offense is required!" }),
   classId: z.coerce.number().min(1, { message: "Class is required!" }),
   incidentDate: z.date({ message: "Incident Date is required!" }),
   reportDate: z.date({ message: "Report Date is required!" }),
-  incidentType: z.string().min(1, { message: "Incident Type is required" }),
   incidentLocation: z
     .string()
     .min(1, { message: "Incident Location is required!" }),

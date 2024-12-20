@@ -231,12 +231,12 @@ async function main() {
   for (let i = 1; i <= 5; i++) {
     await prisma.disciplinaryHistory.create({
       data: {
-        title: `Offense ${i}`,
+        offense: `Offense ${i}`,
         description: `Description for offense ${i}`,
         incidentDate: new Date(),
         reportDate: new Date(),
         incidentLocation: `Location ${i}`,
-        incidentType: "Vandalism",
+
         disciplinaryAction: "suspension",
 
         studentId: `student${i}`,

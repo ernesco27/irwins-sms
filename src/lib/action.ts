@@ -11,6 +11,7 @@ import {
 import prisma from "./prisma";
 import { clerkClient } from "@clerk/nextjs/server";
 import { getSessionData } from "./utils";
+import { DisciplinaryHistory } from "@prisma/client";
 
 type CurrentState = { success: boolean; error: boolean };
 
@@ -385,6 +386,62 @@ export const deleteStudent = async (
     await prisma.student.delete({
       where: {
         id: id,
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+
+    return { success: false, error: true };
+  }
+};
+
+export const createDisciplinaryRecord = async (
+  currentState: CurrentState,
+  data: DisciplinaryHistory,
+) => {
+  try {
+    await prisma.disciplinaryHistory.create({
+      data,
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+export const updateDisciplinaryRecord = async (
+  currentState: CurrentState,
+  data: DisciplinaryHistory,
+) => {
+  try {
+    await prisma.disciplinaryHistory.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+export const deleteDisciplinaryRecord = async (
+  currentState: CurrentState,
+  data: FormData,
+) => {
+  const id = data.get("id") as string;
+
+  try {
+    await prisma.disciplinaryHistory.delete({
+      where: {
+        id: parseInt(id),
       },
     });
 

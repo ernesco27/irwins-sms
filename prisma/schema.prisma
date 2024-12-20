@@ -231,12 +231,11 @@ model Student {
 
     model DisciplinaryHistory{
     id                        Int @id @default(autoincrement())
-    title                     String
+    offense                   String
     description               String
     incidentDate              DateTime
     reportDate                DateTime
     incidentLocation          String
-    incidentType              String
     disciplinaryAction        String
 
 
