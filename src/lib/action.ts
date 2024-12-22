@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import {
   ClassSchema,
+  DisciplineSchema,
   ExamSchema,
   StudentSchema,
   SubjectSchema,
@@ -11,7 +12,6 @@ import {
 import prisma from "./prisma";
 import { clerkClient } from "@clerk/nextjs/server";
 import { getSessionData } from "./utils";
-import { DisciplinaryHistory } from "@prisma/client";
 
 type CurrentState = { success: boolean; error: boolean };
 
@@ -399,7 +399,7 @@ export const deleteStudent = async (
 
 export const createDisciplinaryRecord = async (
   currentState: CurrentState,
-  data: DisciplinaryHistory,
+  data: DisciplineSchema,
 ) => {
   try {
     await prisma.disciplinaryHistory.create({
@@ -415,7 +415,7 @@ export const createDisciplinaryRecord = async (
 
 export const updateDisciplinaryRecord = async (
   currentState: CurrentState,
-  data: DisciplinaryHistory,
+  data: DisciplineSchema,
 ) => {
   try {
     await prisma.disciplinaryHistory.update({
