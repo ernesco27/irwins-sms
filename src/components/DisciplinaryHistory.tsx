@@ -1,7 +1,11 @@
 import prisma from "@/lib/prisma";
 import { getSessionData } from "@/lib/utils";
 
-const DisciplinaryHistory = async () => {
+const DisciplinaryHistory = async ({
+  viewedStudentId,
+}: {
+  viewedStudentId?: string;
+}) => {
   const { currentUserId, role } = await getSessionData();
 
   //   const roleConditions = {
@@ -15,7 +19,8 @@ const DisciplinaryHistory = async () => {
     teacher: { class: { lessons: { some: { teacherId: currentUserId! } } } },
     student: { studentId: currentUserId! },
     parent: { student: { parentId: currentUserId! } },
-    admin: { studentId: currentUserId! },
+    //admin: { studentId: currentUserId! },
+    admin: viewedStudentId ? { studentId: viewedStudentId } : {},
   };
 
   const data = await prisma.disciplinaryHistory.findMany({
