@@ -81,7 +81,7 @@ const DisciplineForm = ({
   const onSubmit = handleSubmit(
     (data) => {
       console.log(data);
-      //formAction(data);
+      formAction(data);
     },
     (errors) => {
       Object.values(errors).forEach((error) => {
@@ -139,7 +139,6 @@ const DisciplineForm = ({
             ))}
           </select>
         </div>
-
         <InputField
           label="Incident Location"
           name="incidentLocation"
@@ -147,7 +146,6 @@ const DisciplineForm = ({
           register={register}
           // error={errors?.incidentLocation}
         />
-
         <InputField
           label="Incident Date"
           name="incidentDate"
@@ -164,7 +162,6 @@ const DisciplineForm = ({
           // error={errors?.reportDate}
           type="date"
         />
-
         <div className="w-full flex flex-wrap gap-6 mt-4 mb-4">
           <label className="text-lg text-gray-500">Incident Descriptiton</label>
           <textarea
@@ -178,7 +175,6 @@ const DisciplineForm = ({
             </p>
           )} */}
         </div>
-
         <div className="flex flex-col gap-2 w-full md:w-2/5">
           <label className="text-lg text-gray-500">Disciplinary Action</label>
           <select
@@ -193,6 +189,16 @@ const DisciplineForm = ({
             ))}
           </select>
         </div>
+        {data && (
+          <InputField
+            label="Id"
+            name="id"
+            defaultValue={data?.id}
+            register={register}
+            //error={errors?.id}
+            hidden
+          />
+        )}
       </div>
 
       <button className="bg-blue-400 text-white p-2 rounded-md">
