@@ -227,8 +227,8 @@ export const disciplineSchema = z.object({
   id: z.number().optional(),
   offense: z.string().min(1, { message: "Offense is required!" }),
   classId: z.coerce.number().min(1, { message: "Class is required!" }),
-  incidentDate: z.date({ message: "Incident Date is required!" }),
-  reportDate: z.date({ message: "Report Date is required!" }),
+  incidentDate: z.coerce.date({ message: "Incident Date is required!" }),
+  reportDate: z.coerce.date({ message: "Report Date is required!" }),
   incidentLocation: z
     .string()
     .min(1, { message: "Incident Location is required!" }),
@@ -245,7 +245,7 @@ export const examSchema = z.object({
   id: z.number().optional(),
   title: z.string().min(1, { message: "Exam Title is required!" }),
   startTime: z.coerce.date({ message: "Start Time is required!" }),
-  endTime: z.coerce.date({ message: "E  Time is required!" }),
+  endTime: z.coerce.date({ message: "End Time is required!" }),
 
   lessonId: z.coerce.number().min(1, { message: "Lesson is required!" }),
 });
