@@ -196,7 +196,7 @@ const SingleStudentPage = async ({
         </div>
         <Performance />
         <Announcements />
-        <DisciplinaryHistory />
+        <DisciplinaryHistory viewedStudentId={student.id} />
       </div>
     </div>
   );
