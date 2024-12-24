@@ -5,6 +5,7 @@ import {
   ClassSchema,
   DisciplineSchema,
   ExamSchema,
+  ParentSchema,
   StudentSchema,
   SubjectSchema,
   TeacherSchema,
@@ -442,6 +443,104 @@ export const deleteDisciplinaryRecord = async (
     await prisma.disciplinaryHistory.delete({
       where: {
         id: parseInt(id),
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+
+    return { success: false, error: true };
+  }
+};
+
+export const createParent = async (
+  currentState: CurrentState,
+  data: ParentSchema,
+) => {
+  try {
+    const user = await (
+      await clerkClient()
+    ).users.createUser({
+      username: data.username,
+      password: data.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      publicMetadata: { role: "parent" },
+    });
+
+    await prisma.parent.create({
+      data: {
+        id: user.id,
+        username: data.username,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        address: data.address,
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+export const updateParent = async (
+  currentState: CurrentState,
+  data: ParentSchema,
+) => {
+  try {
+    if (!data.id) {
+      return { success: false, error: true };
+    }
+    const user = await (
+      await clerkClient()
+    ).users.updateUser(data.id, {
+      ...(data.password !== "" && { password: data.password }),
+      username: data.username,
+
+      firstName: data.firstName,
+      lastName: data.lastName,
+      publicMetadata: { role: "parent" },
+    });
+
+    await prisma.parent.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        ...(data.password !== "" && { password: data.password }),
+        username: data.username,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        address: data.address,
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+export const deleteParent = async (
+  currentState: CurrentState,
+  data: FormData,
+) => {
+  const id = data.get("id") as string;
+
+  try {
+    await (await clerkClient()).users.deleteUser(id);
+
+    await prisma.parent.delete({
+      where: {
+        id: id,
       },
     });
 
