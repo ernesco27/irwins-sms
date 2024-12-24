@@ -4,43 +4,70 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import InputField from "../InputField";
-import Image from "next/image";
-
-const schema = z.object({
-  username: z
-    .string()
-    .min(3, { message: "Username must be at least 3 characters long!" })
-    .max(10, { message: "Username must be at most 10 characters long!" }),
-  email: z.string().email({ message: "Invalid email address!" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long!" }),
-  firstName: z.string().min(1, { message: "First Name is required!" }),
-  lastName: z.string().min(1, { message: "Last Name is required!" }),
-  phoneNumber: z.string().min(1, { message: "Phone Number is required!" }),
-  address: z.string().min(1, { message: "Address is required!" }),
-});
-
-type Inputs = z.infer<typeof schema>;
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { parentSchema, ParentSchema } from "@/lib/formValidationSchema";
+import { useFormState } from "react-dom";
+import { createParent, updateParent } from "@/lib/action";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const ParentForm = ({
   type,
   data,
+  setOpen,
+  relatedData,
 }: {
   type: "create" | "update";
   data?: any;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  relatedData?: any;
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({
-    resolver: zodResolver(schema),
+  } = useForm<ParentSchema>({
+    resolver: zodResolver(parentSchema),
   });
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-  });
+  const [state, formAction] = useFormState(
+    type == "create" ? createParent : updateParent,
+    {
+      success: false,
+      error: false,
+    },
+  );
+
+  const onSubmit = handleSubmit(
+    (data) => {
+      console.log(data);
+      formAction(data);
+    },
+    (errors) => {
+      Object.values(errors).forEach((error) => {
+        toast.error(error.message);
+      });
+    },
+  );
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.success) {
+      toast(
+        `Student ${type === "create" ? "Created" : "updated"} successfully`,
+      );
+      setOpen(false);
+      router.refresh();
+    }
+
+    // if (state.error) {
+    //   // Show the error message if it exists
+    //   toast.error(
+    //     state.message || "An error occurred while creating the student.",
+    //   );
+    // }
+  }, [state, router, type, setOpen]);
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
@@ -56,7 +83,7 @@ const ParentForm = ({
           name="username"
           defaultValue={data?.username}
           register={register}
-          error={errors?.username}
+          //error={errors?.username}
         />
         <InputField
           label="Email"
@@ -64,7 +91,7 @@ const ParentForm = ({
           type="email"
           defaultValue={data?.email}
           register={register}
-          error={errors?.email}
+          //error={errors?.email}
         />
         <InputField
           label="Password"
@@ -72,7 +99,7 @@ const ParentForm = ({
           type="password"
           defaultValue={data?.password}
           register={register}
-          error={errors?.password}
+          //error={errors?.password}
         />
       </div>
 
@@ -85,28 +112,28 @@ const ParentForm = ({
           name="firstName"
           defaultValue={data?.firstName}
           register={register}
-          error={errors?.firstName}
+          //error={errors?.firstName}
         />
         <InputField
           label="Last Name"
           name="lastName"
           defaultValue={data?.lastName}
           register={register}
-          error={errors?.lastName}
+          //error={errors?.lastName}
         />
         <InputField
           label="Phone Number"
           name="phoneNumber"
           defaultValue={data?.phoneNumber}
           register={register}
-          error={errors?.phoneNumber}
+          //error={errors?.phoneNumber}
         />
         <InputField
           label="Address"
           name="address"
           defaultValue={data?.address}
           register={register}
-          error={errors?.address}
+          //error={errors?.address}
         />
       </div>
 
