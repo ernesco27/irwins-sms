@@ -49,6 +49,22 @@ export const teacherSchema = z.object({
 
 export type TeacherSchema = z.infer<typeof teacherSchema>;
 
+export const parentSchema = z.object({
+  id: z.string().optional(),
+  username: z
+    .string()
+    .min(3, { message: "Username must be at least 3 characters long!" })
+    .max(10, { message: "Username must be at most 10 characters long!" }),
+  email: z.string().email({ message: "Invalid email address!" }).optional(),
+  password: z.string().optional(),
+  firstName: z.string().min(1, { message: "First Name is required!" }),
+  lastName: z.string().min(1, { message: "Last Name is required!" }),
+  phoneNumber: z.string().min(1, { message: "Phone Number is required!" }),
+  address: z.string().min(1, { message: "Address is required!" }),
+});
+
+export type ParentSchema = z.infer<typeof parentSchema>;
+
 // export const studentSchema = z.object({
 //   id: z.string().optional(),
 //   username: z
