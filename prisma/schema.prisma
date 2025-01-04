@@ -36,44 +36,53 @@ model Student {
   digitalAddress            String
   fullNameOfGuardian        String
   relationOfGuardian        String
-  phoneNumberOfGuardian      String @unique
+  phoneNumberOfGuardian     String @unique
   emailOfGuardian           String? @unique
   immunizationRecords       Json
   allergies                 String?
   healthConditions          String?
   medications               String?
 
-  createdAt   DateTime @default(now())
+  createdAt                 DateTime @default(now())
 
-  parentId    String
+  parentId                  String
 
-  parent      Parent @relation(fields: [parentId], references: [id])
-  classId     Int
-  class       Class @relation(fields: [classId], references: [id])
-  gradeId     Int
-  grade       Grade @relation(fields: [gradeId], references: [id])
+  parent                    Parent @relation(fields: [parentId], references: [id])
+  classId                   Int
+  class                     Class @relation(fields: [classId], references: [id])
+  gradeId                   Int
+  grade                     Grade @relation(fields: [gradeId], references: [id])
 
-  attendance  Attendance[]
-  results     Result[]
-  disciplinaryHistory   DisciplinaryHistory[]
+  attendance                Attendance[]
+  results                   Result[]
+  disciplinaryHistory       DisciplinaryHistory[]
 }
 
  model Teacher{
-  id          String @id
-  username    String @unique
-  firstName   String
-  lastName    String
-  email       String?  @unique
-  phoneNumber String? @unique
-  address     String
-  img         String?
-  bloodType   String
-  birthday    DateTime
-  sex UserSex
-  createdAt   DateTime @default(now())
-  subjects Subject[]
-  lessons Lesson[]
-  classes Class[]
+  id                        String @id
+  username                  String @unique
+  firstName                 String
+  lastName                  String
+  middleName                String?
+  email                     String?  @unique
+  phoneNumber               String? @unique
+  nationality               String
+  nationalId                String? @unique
+  postalAddress             String?
+  residenceAddress          String
+  digitalAddress            String
+  allergies                 String?
+  healthConditions          String?
+  medications               String?
+  sickling                  String
+  img                       String?
+  bloodGroup                String
+  birthday                  DateTime
+  sex                       UserSex
+  createdAt                 DateTime @default(now())
+  subjects                  Subject[]
+  lessons                   Lesson[]
+  classes                   Class[]
 
  }
 
@@ -120,10 +129,10 @@ model Student {
  }
 
  model Subject{
-  id        Int @id @default(autoincrement())
-  name      String @unique
-  teachers Teacher[]
-  lesons Lesson []
+  id            Int @id @default(autoincrement())
+  name          String @unique
+  teachers      Teacher[]
+  lesons        Lesson []
  
 
 
@@ -131,8 +140,7 @@ model Student {
 
  model Lesson{
   id        Int @id @default(autoincrement())
-  name      String 
-  day Day
+  day       Day
   startTime DateTime
   endTime   DateTime
 
