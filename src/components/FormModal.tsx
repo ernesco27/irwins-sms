@@ -2,7 +2,10 @@
 
 import {
   deleteClass,
+  deleteDisciplinaryRecord,
   deleteExam,
+  deleteLesson,
+  deleteParent,
   deleteStudent,
   deleteSubject,
   deleteTeacher,
@@ -22,15 +25,15 @@ const deleteActionMap = {
   class: deleteClass,
   teacher: deleteTeacher,
   student: deleteStudent,
-  parent: deleteSubject,
+  parent: deleteParent,
   result: deleteSubject,
   exam: deleteExam,
   event: deleteSubject,
   announcement: deleteSubject,
-  lesson: deleteSubject,
+  lesson: deleteLesson,
   assignment: deleteSubject,
   attendance: deleteSubject,
-  DisciplinaryHistory: deleteSubject,
+  DisciplinaryHistory: deleteDisciplinaryRecord,
 };
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {

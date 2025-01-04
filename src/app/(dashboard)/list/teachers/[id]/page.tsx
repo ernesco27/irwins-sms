@@ -4,12 +4,14 @@ import BigCalendarContainer from "@/components/BigCalendarContainer";
 import FormContainer from "@/components/FormContainer";
 import FormModal from "@/components/FormModal";
 import Performance from "@/components/Performance";
+import StudentAttendanceCard from "@/components/StudentAttendanceCard";
 import prisma from "@/lib/prisma";
 import { getSessionData } from "@/lib/utils";
 import { Teacher } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 const SingleTeacherPage = async ({
   params: { id },
@@ -69,7 +71,7 @@ const SingleTeacherPage = async ({
               <div className="flex items-center justify-between gap-2 flex-wrap text-xs font-medium">
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image src="/blood.png" alt="" width={14} height={14} />
-                  <span>{teacher.bloodType}</span>
+                  <span>{teacher.bloodGroup}</span>
                 </div>
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image src="/date.png" alt="" width={14} height={14} />
@@ -91,7 +93,7 @@ const SingleTeacherPage = async ({
           {/* SMALL CARDS */}
           <div className="flex-1 flex gap-4 justify-between flex-wrap">
             {/* CARDs */}
-            <div className="bg-white p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%] ">
+            {/* <div className="bg-white p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%] ">
               <Image
                 src="/singleAttendance.png"
                 alt=""
@@ -103,6 +105,18 @@ const SingleTeacherPage = async ({
                 <h1 className="text-xl font-semi-bold">90%</h1>
                 <span className="text-sm text-gray-400">Attendance</span>
               </div>
+            </div> */}
+            <div className="bg-white p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%] ">
+              <Image
+                src="/singleAttendance.png"
+                alt=""
+                width={24}
+                height={24}
+                className="w-6 h-6"
+              />
+              <Suspense fallback="loading..">
+                <StudentAttendanceCard id={teacher.id} />
+              </Suspense>
             </div>
 
             <div className="bg-white p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%] ">
@@ -165,31 +179,31 @@ const SingleTeacherPage = async ({
           <div className="mt-4  flex gap-4 flex-wrap text-xs text-gray-500">
             <Link
               className="p-3 rounded-md bg-irwinSkyLight"
-              href={`/list/students?teacherId=${"teacher1"}`}
+              href={`/list/students?teacherId=${teacher.id}`}
             >
               Teacher's Students
             </Link>
             <Link
               className="p-3 rounded-md bg-irwinPurpleLight"
-              href={`/list/classes?supervisorId=${"teacher1"}`}
+              href={`/list/classes?supervisorId=${teacher.id}`}
             >
               Teacher's Classes
             </Link>
             <Link
               className="p-3 rounded-md bg-irwinYellowLight "
-              href={`/list/lessons?teacherId=${"teacher1"}`}
+              href={`/list/lessons?teacherId=${teacher.id}`}
             >
               Teacher's Lessons
             </Link>
             <Link
               className="p-3 rounded-md bg-pink-50"
-              href={`/list/exams?teacherId=${"teacher1"}`}
+              href={`/list/exams?teacherId=${teacher.id}`}
             >
               Teaacher's Exams
             </Link>
             <Link
               className="p-3 rounded-md bg-irwinSkyLight"
-              href={`/list/assignments?teacherId=${"teacher1"}`}
+              href={`/list/assignments?teacherId=${teacher.id}`}
             >
               Teaacher's Assignments
             </Link>

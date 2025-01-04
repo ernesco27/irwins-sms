@@ -73,29 +73,32 @@ const ExamsListPage = async ({
 }) => {
   const { role, currentUserId } = await getSessionData();
 
-  const renderRow = (item: ExamsList) => (
-    <tr
-      key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
-    >
-      <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.lesson.subject.name}</h3>
-      </td>
-      <td>{item.lesson.class.name}</td>
-      <td className="hidden md:table-cell">{`${item.lesson.teacher.firstName} ${item.lesson.teacher.lastName}`}</td>
-      <td className="hidden md:table-cell">
-        {new Intl.DateTimeFormat("en-us").format(item.startTime)}
-      </td>
-      <td>
-        {(role === "admin" || role === "teacher") && (
-          <div className="flex items-center gap-2">
-            <FormContainer table="exam" type="update" data={item} />
-            <FormContainer table="exam" type="delete" id={item.id} />
-          </div>
-        )}
-      </td>
-    </tr>
-  );
+  const renderRow = (item: ExamsList) => {
+    console.log("Row Data:", item);
+    return (
+      <tr
+        key={item.id}
+        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
+      >
+        <td className="flex items-center gap-4 p-4">
+          <h3 className="font-semibold">{item.lesson.subject.name}</h3>
+        </td>
+        <td>{item.lesson.class.name}</td>
+        <td className="hidden md:table-cell">{`${item.lesson.teacher.firstName} ${item.lesson.teacher.lastName}`}</td>
+        <td className="hidden md:table-cell">
+          {new Intl.DateTimeFormat("en-us").format(item.startTime)}
+        </td>
+        <td>
+          {(role === "admin" || role === "teacher") && (
+            <div className="flex items-center gap-2">
+              <FormContainer table="exam" type="update" data={item} />
+              <FormContainer table="exam" type="delete" id={item.id} />
+            </div>
+          )}
+        </td>
+      </tr>
+    );
+  };
 
   const { page, ...queryParams } = searchParams;
 
@@ -164,7 +167,7 @@ const ExamsListPage = async ({
       where: query,
       include: {
         lesson: {
-          select: {
+          include: {
             subject: { select: { name: true } },
             teacher: { select: { firstName: true, lastName: true } },
             class: { select: { name: true } },
@@ -176,6 +179,10 @@ const ExamsListPage = async ({
     }),
     prisma.exam.count({ where: query }),
   ]);
+
+  console.log("Fetched Data:", JSON.stringify(data, null, 2));
+  console.log("Total Count:", count);
+
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP  */}

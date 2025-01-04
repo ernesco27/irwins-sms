@@ -13,16 +13,27 @@ const Summary = ({ formData, img }: { formData: any; img: any }) => {
             height={205}
           />
         </div>
-        <div className="flex flex-col gap-4">
-          <div>
-            <p className="font-semibold text-lg text-gray-500">GRADE</p>
-            <p>{formData?.gradeId}</p>
+        {formData.immunizationRecords ? (
+          <div className="flex flex-col gap-4">
+            <div>
+              <p className="font-semibold text-lg text-gray-500">GRADE</p>
+              <p>{formData?.gradeId}</p>
+            </div>
+            <div>
+              <p className="font-semibold text-lg text-gray-500">CLASS</p>
+              <p>{formData?.classId}</p>
+            </div>
           </div>
-          <div>
-            <p className="font-semibold text-lg text-gray-500">CLASS</p>
-            <p>{formData?.classId}</p>
+        ) : (
+          <div className="flex flex-col gap-4">
+            <div>
+              <p className="font-semibold text-lg text-gray-500">
+                SUBJECT(S) TAUGHT
+              </p>
+              <p>{formData?.subjects.join(" | ")}</p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <h3 className="bg-irwinSky font-bold text-lg p-2">
@@ -72,10 +83,14 @@ const Summary = ({ formData, img }: { formData: any; img: any }) => {
           <p className="font-bold text-lg">National ID:</p>
           <p className="text-lg">{formData?.nationalId}</p>
         </div>
-        <div className="mt-4 flex gap-[125px]  ">
-          <p className="font-bold text-lg">Parent UID:</p>
-          <p className="text-lg">{formData?.parentId}</p>
-        </div>
+        {formData.parentId ? (
+          <div className="mt-4 flex gap-[125px]  ">
+            <p className="font-bold text-lg">Parent UID:</p>
+            <p className="text-lg">{formData?.parentId}</p>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <h3 className="bg-irwinSky font-bold text-lg p-2 mt-4">
         Contact Information
@@ -102,28 +117,35 @@ const Summary = ({ formData, img }: { formData: any; img: any }) => {
           <p className="text-lg">{formData?.emailAddress || "---"}</p>
         </div>
       </div>
-      <h3 className="bg-irwinSky font-bold text-lg p-2 mt-4">
-        Guardian Information
-      </h3>
-      <div className="p-2">
-        <div className="mt-4 flex gap-[132px] ">
-          <p className="font-bold text-lg">Full Name:</p>
-          <p className="text-lg">{formData?.fullNameOfGuardian}</p>
-        </div>
-        <div className="mt-4 flex gap-[148px]">
-          <p className="font-bold text-lg">Relation:</p>
-          <p className="text-lg">{formData?.relationOfGuardian}</p>
-        </div>
-        <div className="mt-4 flex gap-[88px] ">
-          <p className="font-bold text-lg">Phone Number:</p>
-          <p className="text-lg">{formData?.phoneNumberOfGuardian}</p>
-        </div>
+      {formData.fullNameOfGuardian ? (
+        <div>
+          <h3 className="bg-irwinSky font-bold text-lg p-2 mt-4">
+            Guardian Information
+          </h3>
+          <div className="p-2">
+            <div className="mt-4 flex gap-[132px] ">
+              <p className="font-bold text-lg">Full Name:</p>
+              <p className="text-lg">{formData?.fullNameOfGuardian}</p>
+            </div>
+            <div className="mt-4 flex gap-[148px]">
+              <p className="font-bold text-lg">Relation:</p>
+              <p className="text-lg">{formData?.relationOfGuardian}</p>
+            </div>
+            <div className="mt-4 flex gap-[88px] ">
+              <p className="font-bold text-lg">Phone Number:</p>
+              <p className="text-lg">{formData?.phoneNumberOfGuardian}</p>
+            </div>
 
-        <div className="mt-4 flex gap-[95px] ">
-          <p className="font-bold text-lg">Email Address:</p>
-          <p className="text-lg">{formData?.emailOfGuardian || "---"}</p>
+            <div className="mt-4 flex gap-[95px] ">
+              <p className="font-bold text-lg">Email Address:</p>
+              <p className="text-lg">{formData?.emailOfGuardian || "---"}</p>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        ""
+      )}
+
       <h3 className="bg-irwinSky font-bold text-lg p-2 mt-4">
         Medical History
       </h3>
@@ -148,55 +170,46 @@ const Summary = ({ formData, img }: { formData: any; img: any }) => {
           <p className="font-bold text-lg">Medications:</p>
           <p className="text-lg">{formData?.medications}</p>
         </div>
-        <p className="font-bold text-lg my-2">Immunization:</p>
-        <table className="w-full border-collapse border border-gray-200 rounded-lg overflow-hidden">
-          <thead>
-            <tr className="bg-irwinSky text-left ">
-              <th className="p-2 border-b border-gray-200">Vaccine Name</th>
-              <th className="p-2 border-b border-gray-200">Vaccine Type</th>
-              <th className="p-2 border-b border-gray-200">Vaccine Dose</th>
-              <th className="p-2 border-b border-gray-200">
-                Date Administered
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {formData?.immunizationRecords.map((record: any, i: any) => (
-              <tr
-                key={record.i}
-                className="bg-white hover:bg-gray-100 transition-colors"
-              >
-                <td className="p-2 border-b border-gray-200">
-                  {record.vaccineName || "---"}
-                </td>
-                <td className="p-2 border-b border-gray-200">
-                  {record.vaccineType || "---"}
-                </td>
-                <td className="p-2 border-b border-gray-200">
-                  {record.vaccineDose || "---"}
-                </td>
-                <td className="p-2 border-b border-gray-200">
-                  {record.vaccineDate.toISOString().split("T")[0] || "---"}
-                </td>
-              </tr>
-            ))}
-
-            {/* <tr className="bg-white hover:bg-gray-100 transition-colors">
-              <td className="p-2 border-b border-gray-200">
-                {formData?.vaccineName || "---"}
-              </td>
-              <td className="p-2 border-b border-gray-200">
-                {formData?.vaccineType || "---"}
-              </td>
-              <td className="p-2 border-b border-gray-200">
-                {formData?.vaccineDose || "---"}
-              </td>
-              <td className="p-2 border-b border-gray-200">
-                {formData?.vaccineDate.toISOString().split("T")[0] || "---"}
-              </td>
-            </tr> */}
-          </tbody>
-        </table>
+        {formData.immunizationRecords ? (
+          <div>
+            <p className="font-bold text-lg my-2">Immunization:</p>
+            <table className="w-full border-collapse border border-gray-200 rounded-lg overflow-hidden">
+              <thead>
+                <tr className="bg-irwinSky text-left ">
+                  <th className="p-2 border-b border-gray-200">Vaccine Name</th>
+                  <th className="p-2 border-b border-gray-200">Vaccine Type</th>
+                  <th className="p-2 border-b border-gray-200">Vaccine Dose</th>
+                  <th className="p-2 border-b border-gray-200">
+                    Date Administered
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {formData?.immunizationRecords.map((record: any, i: any) => (
+                  <tr
+                    key={record.i}
+                    className="bg-white hover:bg-gray-100 transition-colors"
+                  >
+                    <td className="p-2 border-b border-gray-200">
+                      {record.vaccineName || "---"}
+                    </td>
+                    <td className="p-2 border-b border-gray-200">
+                      {record.vaccineType || "---"}
+                    </td>
+                    <td className="p-2 border-b border-gray-200">
+                      {record.vaccineDose || "---"}
+                    </td>
+                    <td className="p-2 border-b border-gray-200">
+                      {record.vaccineDate.toISOString().split("T")[0] || "---"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
