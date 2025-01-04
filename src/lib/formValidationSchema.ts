@@ -38,16 +38,86 @@ export const teacherSchema = z.object({
     .or(z.literal("")),
   firstName: z.string().min(1, { message: "First Name is required!" }),
   lastName: z.string().min(1, { message: "Last Name is required!" }),
+  middleName: z.string().optional(),
   phoneNumber: z.string().optional(),
-  address: z.string().min(1, { message: "Address is required!" }),
+  nationality: z.string().min(1, { message: "Nationality is required!" }),
+  nationalId: z.string().min(1, { message: "National ID is required!" }),
+  postalAddress: z.string().optional(),
+  residenceAddress: z
+    .string()
+    .min(1, { message: "Residence Address is required!" }),
+  digitalAddress: z
+    .string()
+    .min(1, { message: "Digital Address is required!" }),
+
   birthDay: z.coerce.date({ message: "Date of Birth is required!" }),
   sex: z.enum(["MALE", "FEMALE"], { message: "Sex is required!" }),
   img: z.string().optional(),
-  bloodType: z.string().min(1, { message: "Blood Type is required!" }),
+  bloodGroup: z.string().min(1, { message: "Blood Group is required!" }),
+  sickling: z.string().min(1, { message: "Sickling is required!" }),
+  allergies: z.string().min(1, { message: "Allergy is required!" }),
+  healthConditions: z
+    .string()
+    .min(1, { message: "Health Condition is required!" }),
+  medications: z.string().min(1, { message: "Medication is required!" }),
   subjects: z.array(z.string()).optional(),
 });
 
 export type TeacherSchema = z.infer<typeof teacherSchema>;
+
+export const teacherStepSchemas = {
+  1: z.object({
+    id: z.string().optional(),
+    username: z
+      .string()
+      .min(3, { message: "Username must be at least 3 characters long!" })
+      .max(10, { message: "Username must be at most 10 characters long!" }),
+    email: z
+      .string()
+      .email({ message: "Invalid email address!" })
+      .optional()
+      .or(z.literal("")),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long!" })
+      .optional()
+      .or(z.literal("")),
+  }),
+
+  2: z.object({
+    firstName: z.string().min(1, { message: "First Name is required!" }),
+    lastName: z.string().min(1, { message: "Last Name is required!" }),
+    middleName: z.string().optional(),
+    birthDay: z.coerce.date({ message: "Date of Birth is required!" }),
+    sex: z.enum(["MALE", "FEMALE"], { message: "Sex is required!" }),
+    nationality: z.string().min(1, { message: "Nationality is required!" }),
+    nationalId: z.string().min(1, { message: "National ID is required!" }),
+  }),
+  3: z.object({
+    phoneNumber: z.string().optional(),
+    postalAddress: z.string().optional(),
+    residenceAddress: z
+      .string()
+      .min(1, { message: "Residence Address is required!" }),
+    digitalAddress: z
+      .string()
+      .min(1, { message: "Digital Address is required!" }),
+  }),
+
+  4: z.object({
+    bloodGroup: z.string().min(1, { message: "Blood Group is required!" }),
+    sickling: z.string().min(1, { message: "Sickling is required!" }),
+    allergies: z.string().min(1, { message: "Allergy is required!" }),
+    healthConditions: z
+      .string()
+      .min(1, { message: "Health Condition is required!" }),
+    medications: z.string().min(1, { message: "Medication is required!" }),
+  }),
+  5: z.object({
+    img: z.string().optional(),
+    subjects: z.array(z.string()).optional(),
+  }),
+};
 
 export const parentSchema = z.object({
   id: z.string().optional(),
@@ -64,35 +134,6 @@ export const parentSchema = z.object({
 });
 
 export type ParentSchema = z.infer<typeof parentSchema>;
-
-// export const studentSchema = z.object({
-//   id: z.string().optional(),
-//   username: z
-//     .string()
-//     .min(3, { message: "Username must be at least 3 characters long!" })
-//     .max(10, { message: "Username must be at most 10 characters long!" }),
-//   email: z
-//     .string()
-//     .email({ message: "Invalid email address!" })
-//     .optional()
-//     .or(z.literal("")),
-//   password: z
-//     .string()
-//     .min(8, { message: "Password must be at least 8 characters long!" })
-//     .optional()
-//     .or(z.literal("")),
-//   firstName: z.string().min(1, { message: "First Name is required!" }),
-//   lastName: z.string().min(1, { message: "Last Name is required!" }),
-//   phoneNumber: z.string().optional(),
-//   address: z.string().min(1, { message: "Address is required!" }),
-//   birthDay: z.coerce.date({ message: "Date of Birth is required!" }),
-//   sex: z.enum(["MALE", "FEMALE"], { message: "Sex is required!" }),
-//   img: z.string().optional(),
-//   bloodType: z.string().min(1, { message: "Blood Type is required!" }),
-//   gradeId: z.coerce.number().min(1, { message: "Grade is required!" }),
-//   classId: z.coerce.number().min(1, { message: "Class is required!" }),
-//   parentId: z.string().min(1, { message: "Parent is required!" }),
-// });
 
 const immunizationRecordSchema = z.object({
   vaccineName: z.string().optional(),
@@ -267,3 +308,17 @@ export const examSchema = z.object({
 });
 
 export type ExamSchema = z.infer<typeof examSchema>;
+
+export const lessonSchema = z.object({
+  id: z.coerce.number().optional(),
+  day: z.enum(["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"], {
+    message: "Day is required!",
+  }),
+  startTime: z.coerce.date({ message: "Start Time is required!" }),
+  endTime: z.coerce.date({ message: "End Time is required!" }),
+  subjectId: z.coerce.number().min(1, { message: "Subject is required!" }),
+  classId: z.coerce.number().min(1, { message: "Class is required!" }),
+  teacherId: z.string().min(1, { message: "Teacher is required!" }),
+});
+
+export type LessonSchema = z.infer<typeof lessonSchema>;
