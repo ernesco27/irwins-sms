@@ -62,11 +62,20 @@ async function main() {
         username: `teacher${i}`,
         firstName: `TName${i}`,
         lastName: `TSurname${i}`,
+        middleName: `MName${i}`,
         email: `teacher${i}@example.com`,
         phoneNumber: `123-456-789${i}`,
-        address: `Address${i}`,
-        bloodType: "A+",
+        nationality: "Ghana",
+        nationalId: `nationalId${i}`,
+        postalAddress: `Address${i}`,
+        residenceAddress: `resAddress${i}`,
+        digitalAddress: `digAddress${i}`,
+        bloodGroup: "O-",
+        sickling: "AA",
         sex: i % 2 === 0 ? UserSex.MALE : UserSex.FEMALE,
+        allergies: "None",
+        healthConditions: "None",
+        medications: "None",
         subjects: { connect: [{ id: (i % 10) + 1 }] },
         classes: { connect: [{ id: (i % 6) + 1 }] },
         birthday: new Date(
@@ -80,7 +89,7 @@ async function main() {
   for (let i = 1; i <= 30; i++) {
     await prisma.lesson.create({
       data: {
-        name: `Lesson${i}`,
+        //name: `Lesson${i}`,
         day: Day[
           Object.keys(Day)[
             Math.floor(Math.random() * Object.keys(Day).length)
