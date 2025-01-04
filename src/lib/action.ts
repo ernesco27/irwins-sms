@@ -5,6 +5,7 @@ import {
   ClassSchema,
   DisciplineSchema,
   ExamSchema,
+  LessonSchema,
   ParentSchema,
   StudentSchema,
   SubjectSchema,
@@ -161,16 +162,25 @@ export const createTeacher = async (
         username: data.username,
         firstName: data.firstName,
         lastName: data.lastName,
+        middleName: data.middleName,
+        nationality: data.nationality,
         email: data.email,
         phoneNumber: data.phoneNumber,
-        address: data.address,
+        postalAddress: data.postalAddress,
+        residenceAddress: data.residenceAddress,
+        digitalAddress: data.digitalAddress,
+        sickling: data.sickling,
+        allergies: data.allergies,
+        healthConditions: data.healthConditions,
+        medications: data.medications,
         img: data.img,
-        bloodType: data.bloodType,
+        bloodGroup: data.bloodGroup,
         sex: data.sex,
         birthday: data.birthDay,
         subjects: {
-          connect: data.subjects?.map((subjectId: string) => ({
-            id: parseInt(subjectId),
+          connect: data.subjects?.map((subjectName: string) => ({
+            //id: parseInt(subjectId),
+            name: subjectName,
           })),
         },
       },
@@ -213,14 +223,22 @@ export const updateTeacher = async (
         lastName: data.lastName,
         email: data.email,
         phoneNumber: data.phoneNumber,
-        address: data.address,
+        postalAddress: data.postalAddress,
+        residenceAddress: data.residenceAddress,
+        digitalAddress: data.digitalAddress,
+        sickling: data.sickling,
+        allergies: data.allergies,
+        healthConditions: data.healthConditions,
+        medications: data.medications,
+
         img: data.img,
-        bloodType: data.bloodType,
+        bloodGroup: data.bloodGroup,
         sex: data.sex,
         birthday: data.birthDay,
         subjects: {
-          set: data.subjects?.map((subjectId: string) => ({
-            id: parseInt(subjectId),
+          set: data.subjects?.map((subjectName: string) => ({
+            //id: parseInt(subjectId),
+            name: subjectName,
           })),
         },
       },
@@ -640,6 +658,78 @@ export const deleteExam = async (
         ...(role === "teacher"
           ? { lesson: { teacherId: currentUserId! } }
           : {}),
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+
+    return { success: false, error: true };
+  }
+};
+
+export const createLesson = async (
+  currentState: CurrentState,
+  data: LessonSchema,
+) => {
+  try {
+    await prisma.lesson.create({
+      data: {
+        //name: data.name,
+        day: data.day,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        subjectId: data.subjectId,
+        classId: data.classId,
+        teacherId: data.teacherId,
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+export const updateLesson = async (
+  currentState: CurrentState,
+  data: LessonSchema,
+) => {
+  try {
+    await prisma.lesson.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        //name: data.name,
+        day: data.day,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        subjectId: data.subjectId,
+        classId: data.classId,
+        teacherId: data.teacherId,
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+export const deleteLesson = async (
+  currentState: CurrentState,
+  data: FormData,
+) => {
+  const id = data.get("id") as string;
+
+  try {
+    await prisma.lesson.delete({
+      where: {
+        id: parseInt(id),
       },
     });
 
