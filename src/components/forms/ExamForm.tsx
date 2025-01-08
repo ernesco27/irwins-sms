@@ -133,7 +133,11 @@ const ExamForm = ({
         <InputField
           label="Start Date"
           name="startTime"
-          defaultValue={data?.startTime}
+          defaultValue={
+            data?.endTime
+              ? new Date(data.startTime).toISOString().slice(0, 16)
+              : ""
+          }
           register={register}
           error={errors?.startTime}
           type="dateTime-local"
@@ -141,11 +145,24 @@ const ExamForm = ({
         <InputField
           label="End Date"
           name="endTime"
-          defaultValue={data?.endTime}
+          defaultValue={
+            data?.endTime
+              ? new Date(data.endTime).toISOString().slice(0, 16)
+              : ""
+          }
           register={register}
           error={errors?.endTime}
           type="dateTime-local"
         />
+        {data && (
+          <InputField
+            label="Id"
+            name="id"
+            defaultValue={data?.id}
+            register={register}
+            hidden
+          />
+        )}
       </div>
 
       <button className="bg-blue-400 text-white p-2 rounded-md">

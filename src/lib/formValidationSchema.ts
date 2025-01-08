@@ -299,7 +299,7 @@ export const disciplineSchema = z.object({
 export type DisciplineSchema = z.infer<typeof disciplineSchema>;
 
 export const examSchema = z.object({
-  id: z.number().optional(),
+  id: z.coerce.number().optional(),
   // title: z.string().min(1, { message: "Exam Title is required!" }),
   startTime: z.coerce.date({ message: "Start Time is required!" }),
   endTime: z.coerce.date({ message: "End Time is required!" }),
