@@ -39,9 +39,17 @@ const ExamForm = ({
     },
   );
 
-  const onSubmit = handleSubmit((data) => {
-    formAction(data);
-  });
+  const onSubmit = handleSubmit(
+    (data) => {
+      console.log(data);
+      formAction(data);
+    },
+    (errors) => {
+      Object.values(errors).forEach((error) => {
+        toast.error(error.message);
+      });
+    },
+  );
 
   const router = useRouter();
 
@@ -53,9 +61,7 @@ const ExamForm = ({
     }
   }, [state, router, type, setOpen]);
 
-  //const exams = relatedData?.lessons || [];
-
-  const { lessons } = relatedData;
+  const { examSubjects, examClass, examTeacher } = relatedData;
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
@@ -67,13 +73,63 @@ const ExamForm = ({
         Exam Information
       </span>
       <div className="flex justify-between gap-4 flex-wrap">
-        <InputField
-          label="Exam Title"
-          name="title"
-          defaultValue={data?.title}
-          register={register}
-          error={errors?.title}
-        />
+        <div className="w-full flex justify-between">
+          <div className="flex flex-col gap-2 w-full md:w-1/4">
+            <label className="text-lg text-gray-500">Exam Title</label>
+            <select
+              className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+              {...register("subjectId")}
+              defaultValue={data?.subjectId}
+            >
+              {examSubjects.map((lesson: { id: number; name: string }) => {
+                return (
+                  <option key={lesson.id} value={lesson.id}>
+                    {lesson.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex flex-col gap-2 w-full md:w-1/4">
+            <label className="text-lg text-gray-500">Class</label>
+            <select
+              className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+              {...register("classId")}
+              defaultValue={data?.classId}
+            >
+              {examClass.map((classes: { id: number; name: string }) => {
+                return (
+                  <option key={classes.id} value={classes.id}>
+                    {classes.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex flex-col gap-2 w-full md:w-1/4">
+            <label className="text-lg text-gray-500">Teacher</label>
+            <select
+              className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+              {...register("teacherId")}
+              defaultValue={data?.teacherId}
+            >
+              {examTeacher.map(
+                (teacher: {
+                  id: string;
+                  firstName: string;
+                  lastName: string;
+                }) => {
+                  return (
+                    <option key={teacher.id} value={teacher.id}>
+                      {`${teacher.firstName} ${teacher.lastName}`}
+                    </option>
+                  );
+                },
+              )}
+            </select>
+          </div>
+        </div>
+
         <InputField
           label="Start Date"
           name="startTime"
@@ -90,25 +146,6 @@ const ExamForm = ({
           error={errors?.endTime}
           type="dateTime-local"
         />
-        <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Lesson</label>
-          <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            {...register("lessonId")}
-            defaultValue={data?.lessonId}
-          >
-            {lessons.map((lesson: { id: number; name: string }) => (
-              <option key={lesson.id} value={lesson.id}>
-                {lesson.name}
-              </option>
-            ))}
-          </select>
-          {errors.lessonId?.message && (
-            <p className="text-xs text-red-400">
-              {errors.lessonId.message.toString()}
-            </p>
-          )}
-        </div>
       </div>
 
       <button className="bg-blue-400 text-white p-2 rounded-md">

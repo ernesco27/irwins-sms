@@ -22,8 +22,8 @@ const BigCalendarContainer = async ({
 
   const data = dataRes.map((lesson) => ({
     title: lesson.subject.name,
-    start: lesson.startTime,
-    end: lesson.endTime,
+    start: new Date(lesson.startTime),
+    end: new Date(lesson.endTime),
   }));
 
   const schedule = adjustScheduleToCurrentWeek(data);

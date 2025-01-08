@@ -54,9 +54,7 @@ const ParentForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(
-        `Student ${type === "create" ? "Created" : "updated"} successfully`,
-      );
+      toast(`Parent ${type === "create" ? "Created" : "updated"} successfully`);
       setOpen(false);
       router.refresh();
     }

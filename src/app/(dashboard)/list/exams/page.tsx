@@ -11,11 +11,9 @@ import Link from "next/link";
 import FormContainer from "@/components/FormContainer";
 
 type ExamsList = Exam & {
-  lesson: {
-    subject: Subject;
-    teacher: Teacher;
-    class: Class;
-  };
+  subject: Subject;
+  teacher: Teacher;
+  class: Class;
 };
 const columns = [
   {
@@ -81,10 +79,10 @@ const ExamsListPage = async ({
         className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
       >
         <td className="flex items-center gap-4 p-4">
-          <h3 className="font-semibold">{item.lesson.subject.name}</h3>
+          <h3 className="font-semibold">{item.subject.name}</h3>
         </td>
-        <td>{item.lesson.class.name}</td>
-        <td className="hidden md:table-cell">{`${item.lesson.teacher.firstName} ${item.lesson.teacher.lastName}`}</td>
+        <td>{item.class.name}</td>
+        <td className="hidden md:table-cell">{`${item.teacher.firstName} ${item.teacher.lastName}`}</td>
         <td className="hidden md:table-cell">
           {new Intl.DateTimeFormat("en-us").format(item.startTime)}
         </td>
@@ -108,21 +106,23 @@ const ExamsListPage = async ({
 
   const query: Prisma.ExamWhereInput = {};
 
-  query.lesson = {};
+  query.subject = {};
+  query.class = {};
+  query.teacher = {};
 
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       if (value !== undefined) {
         switch (key) {
           case "classId":
-            query.lesson.classId = parseInt(value);
+            query.classId = parseInt(value);
             break;
           case "teacherId":
-            query.lesson.teacherId = value;
+            query.teacherId = value;
             break;
           case "search":
             //query.name = { contains: value, mode: "insensitive" };
-            query.lesson.subject = {
+            query.subject = {
               name: { contains: value, mode: "insensitive" },
             };
 
@@ -139,10 +139,10 @@ const ExamsListPage = async ({
     case "admin":
       break;
     case "teacher":
-      query.lesson.teacherId = currentUserId!;
+      query.teacherId = currentUserId!;
       break;
     case "student":
-      query.lesson.class = {
+      query.class = {
         students: {
           some: {
             id: currentUserId!,
@@ -151,7 +151,7 @@ const ExamsListPage = async ({
       };
       break;
     case "parent":
-      query.lesson.class = {
+      query.class = {
         students: {
           some: {
             parentId: currentUserId!,
@@ -165,15 +165,22 @@ const ExamsListPage = async ({
   const [data, count] = await prisma.$transaction([
     prisma.exam.findMany({
       where: query,
+
       include: {
-        lesson: {
-          include: {
-            subject: { select: { name: true } },
-            teacher: { select: { firstName: true, lastName: true } },
-            class: { select: { name: true } },
-          },
-        },
+        class: { select: { name: true } },
+        teacher: { select: { firstName: true, lastName: true } },
+        subject: { select: { name: true } },
       },
+
+      // include: {
+      //   lesson: {
+      //     include: {
+      //       subject: { select: { name: true } },
+      //       teacher: { select: { firstName: true, lastName: true } },
+      //       class: { select: { name: true } },
+      //     },
+      //   },
+      // },
       take: ITEM_PER_PAGE,
       skip: ITEM_PER_PAGE * (p - 1),
     }),

@@ -87,6 +87,10 @@ const LessonsListPage = async ({
 
   const query: Prisma.LessonWhereInput = {};
 
+  if (role === "teacher") {
+    query.teacherId = currentUserId!;
+  }
+
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       if (value !== undefined) {
@@ -94,9 +98,9 @@ const LessonsListPage = async ({
           case "classId":
             query.classId = parseInt(value);
             break;
-          case "teacherId":
-            query.teacherId = value;
-            break;
+          // case "teacherId":
+          //   query.teacherId = value;
+          //   break;
           case "search":
             //query.name = { contains: value, mode: "insensitive" };
             query.OR = [

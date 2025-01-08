@@ -576,25 +576,26 @@ export const createExam = async (
 ) => {
   const { currentUserId, role } = await getSessionData();
   try {
-    if (role === "teacher") {
-      const teacherLesson = await prisma.lesson.findFirst({
-        where: {
-          teacherId: currentUserId!,
-          id: data.lessonId,
-        },
-      });
+    // if (role === "teacher") {
+    //   const teacherLesson = await prisma.lesson.findFirst({
+    //     where: {
+    //       teacherId: currentUserId!,
+    //       id: data.id,
+    //     },
+    //   });
 
-      if (!teacherLesson) {
-        return { success: false, error: true };
-      }
-    }
+    //   if (!teacherLesson) {
+    //     return { success: false, error: true };
+    //   }
+    // }
 
     await prisma.exam.create({
       data: {
-        title: data.title,
         startTime: data.startTime,
         endTime: data.endTime,
-        lessonId: data.lessonId,
+        teacherId: data.teacherId,
+        classId: data.classId,
+        subjectId: data.subjectId,
       },
     });
 
@@ -611,28 +612,29 @@ export const updateExam = async (
 ) => {
   const { currentUserId, role } = await getSessionData();
   try {
-    if (role === "teacher") {
-      const teacherLesson = await prisma.lesson.findFirst({
-        where: {
-          teacherId: currentUserId!,
-          id: data.lessonId,
-        },
-      });
+    // if (role === "teacher") {
+    //   const teacherLesson = await prisma.lesson.findFirst({
+    //     where: {
+    //       teacherId: currentUserId!,
+    //       id: data.id,
+    //     },
+    //   });
 
-      if (!teacherLesson) {
-        return { success: false, error: true };
-      }
-    }
+    //   if (!teacherLesson) {
+    //     return { success: false, error: true };
+    //   }
+    // }
 
     await prisma.exam.update({
       where: {
         id: data.id,
       },
       data: {
-        title: data.title,
         startTime: data.startTime,
         endTime: data.endTime,
-        lessonId: data.lessonId,
+        teacherId: data.teacherId,
+        classId: data.classId,
+        subjectId: data.subjectId,
       },
     });
 

@@ -15,6 +15,8 @@ const TeacherPage = async ({
   const { currentUserId } = await getSessionData();
   const user = await currentUser();
 
+  console.log("id:", currentUserId);
+
   return (
     <div>
       <h1 className="p-4 text-2xl font-medium">

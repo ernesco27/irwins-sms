@@ -83,6 +83,7 @@ model Student {
   subjects                  Subject[]
   lessons                   Lesson[]
   classes                   Class[]
+  exams                     Exam[]
 
  }
 
@@ -123,6 +124,7 @@ model Student {
   events        Event[]
   announcements Announcement[]
   disciplinaryHistory   DisciplinaryHistory[]
+  exams Exam[]
   
  
 
@@ -132,7 +134,8 @@ model Student {
   id            Int @id @default(autoincrement())
   name          String @unique
   teachers      Teacher[]
-  lesons        Lesson []
+  lessons        Lesson []
+  exams         Exam[]
  
 
 
@@ -154,19 +157,28 @@ model Student {
   teacherId String
   teacher Teacher @relation(fields: [teacherId], references: [id])
 
-  exams Exam[]
+  //exams Exam[]
   assignments Assignment[]
   attendance Attendance[]
  }
 
  model Exam{
   id          Int @id @default(autoincrement())
-  title       String
+  //title       String
   startTime   DateTime
   endTime     DateTime
 
-  lessonId    Int
-  lesson Lesson @relation(fields: [lessonId], references: [id])
+  classId     Int
+  class Class @relation(fields: [classId], references: [id])
+
+   subjectId Int
+   subject Subject @relation(fields: [subjectId], references: [id])
+
+  //  lessonId    Int
+  //  lesson Lesson @relation(fields: [lessonId], references: [id])
+
+   teacherId    String
+   teacher Teacher @relation(fields: [teacherId], references: [id])
 
   results Result[]
 
