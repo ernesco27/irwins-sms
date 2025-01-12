@@ -68,12 +68,9 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
 
         break;
       case "exam":
-        const { currentUserId, role } = await getSessionData();
+        //const { currentUserId, role } = await getSessionData();
 
         const examTeacher = await prisma.teacher.findMany({
-          // where: {
-          //   ...(role === "teacher" ? { teacherId: currentUserId! } : {}),
-          // },
           select: {
             id: true,
             firstName: true,
@@ -119,6 +116,29 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
         });
 
         relatedData = { teachers, subjects, classes };
+
+        break;
+      case "assignment":
+        const assignmentTeacher = await prisma.teacher.findMany({
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        });
+
+        const assignmentClass = await prisma.class.findMany({
+          select: { id: true, name: true },
+        });
+
+        const assignmentSubjects = await prisma.subject.findMany({
+          select: { id: true, name: true },
+        });
+        relatedData = {
+          assignmentClass,
+          assignmentSubjects,
+          assignmentTeacher,
+        };
 
         break;
 

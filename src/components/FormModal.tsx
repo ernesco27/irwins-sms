@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  deleteAssignment,
   deleteClass,
   deleteDisciplinaryRecord,
   deleteExam,
@@ -31,7 +32,7 @@ const deleteActionMap = {
   event: deleteSubject,
   announcement: deleteSubject,
   lesson: deleteLesson,
-  assignment: deleteSubject,
+  assignment: deleteAssignment,
   attendance: deleteSubject,
   DisciplinaryHistory: deleteDisciplinaryRecord,
 };
