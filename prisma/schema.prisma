@@ -84,6 +84,7 @@ model Student {
   lessons                   Lesson[]
   classes                   Class[]
   exams                     Exam[]
+  assignments               Assignment[]
 
  }
 
@@ -96,15 +97,15 @@ model Student {
   phoneNumber String @unique
   address     String
   createdAt   DateTime @default(now())
-  students Student[]
+  students    Student[]
  }
 
  model Grade{
   id        Int @id @default(autoincrement())
   level     Int @unique
 
-  students Student[]
-  classes Class[]
+  students  Student[]
+  classes   Class[]
 
  }
 
@@ -124,7 +125,8 @@ model Student {
   events        Event[]
   announcements Announcement[]
   disciplinaryHistory   DisciplinaryHistory[]
-  exams Exam[]
+  exams         Exam[]
+  assignments   Assignment[]
   
  
 
@@ -136,6 +138,7 @@ model Student {
   teachers      Teacher[]
   lessons        Lesson []
   exams         Exam[]
+   assignments Assignment[]
  
 
 
@@ -158,7 +161,7 @@ model Student {
   teacher Teacher @relation(fields: [teacherId], references: [id])
 
   //exams Exam[]
-  assignments Assignment[]
+  //assignments Assignment[]
   attendance Attendance[]
  }
 
@@ -185,13 +188,23 @@ model Student {
  }
 
  model Assignment{
-  id          Int @id @default(autoincrement())
-  title       String
-  startDate   DateTime
-  dueDate     DateTime
+  id                  Int @id @default(autoincrement())
 
-  lessonId    Int
-  lesson Lesson @relation(fields: [lessonId], references: [id])
+  subjectId           Int
+  subject             Subject @relation(fields: [subjectId], references: [id])
+
+  teacherId           String
+  teacher             Teacher @relation(fields: [teacherId], references: [id])
+
+  classId             Int
+  class               Class @relation(fields: [classId], references: [id])
+
+  date                DateTime
+  file                String?
+  notes               String?
+
+  // lessonId    Int
+  // lesson Lesson @relation(fields: [lessonId], references: [id])
 
   results Result[]
  }
