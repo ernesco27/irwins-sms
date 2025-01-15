@@ -76,7 +76,7 @@ const StudentListPage = async ({
       <td className="hidden md:table-cell">{item.class.name[0]}</td>
 
       <td className="hidden md:table-cell">{item.phoneNumber}</td>
-      <td className="hidden md:table-cell">{item.address}</td>
+      <td className="hidden md:table-cell">{item.residenceAddress}</td>
       <td>
         <div className="flex items-center gap-2">
           <Link href={`/list/students/${item.id}`}>

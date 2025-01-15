@@ -9,10 +9,9 @@ import { assignmentSchema, AssignmentSchema } from "@/lib/formValidationSchema";
 import { useFormState } from "react-dom";
 import { createAssignment, updateAssignment } from "@/lib/action";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-import FileUpload from "../FileUpload";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../lib/firebaseConfig";
+import { toast } from "react-toastify";
 
 const AssignmentForm = ({
   type,
@@ -35,7 +34,7 @@ const AssignmentForm = ({
 
   const [file, setFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
-  const [downloadURL, setDownloadURL] = useState<string | null>(null);
+  const [downloadURL, setDownloadURL] = useState<string | undefined>(undefined);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -78,8 +77,7 @@ const AssignmentForm = ({
   const onSubmit = handleSubmit(
     (data) => {
       const completeData = { ...data, file: downloadURL };
-      console.log(completeData);
-      //formAction(data);
+      formAction(completeData);
     },
     (errors) => {
       Object.values(errors).forEach((error) => {
@@ -201,10 +199,20 @@ const AssignmentForm = ({
         <InputField
           label="Due Date"
           name="date"
-          defaultValue={data?.date}
+          defaultValue={data?.date.toISOString().split("T")[0]}
           register={register}
           type="date"
         />
+
+        {data && (
+          <InputField
+            label="Id"
+            name="id"
+            defaultValue={data?.id}
+            register={register}
+            hidden
+          />
+        )}
       </div>
 
       <button className="bg-blue-400 text-white p-2 rounded-md">

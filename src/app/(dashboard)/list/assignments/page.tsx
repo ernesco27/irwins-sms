@@ -1,3 +1,4 @@
+import FormContainer from "@/components/FormContainer";
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
@@ -13,11 +14,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 type AssignmentList = Assignment & {
-  lesson: {
-    subject: Subject;
-    teacher: Teacher;
-    class: Class;
-  };
+  class: Class;
+  subject: Subject;
+  teacher: Teacher;
 };
 
 const columns = [
@@ -82,21 +81,25 @@ const AssignmentListPage = async ({
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-irwinPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.lesson.subject.name}</h3>
+        <h3 className="font-semibold">{item.subject.name}</h3>
       </td>
-      <td>{item.lesson.class.name}</td>
-      <td className="hidden md:table-cell">{`${item.lesson.teacher.firstName} ${item.lesson.teacher.lastName}`}</td>
+      <td>{item.class.name}</td>
+      <td className="hidden md:table-cell">{`${item.teacher.firstName} ${item.teacher.lastName}`}</td>
       <td className="hidden md:table-cell">
         {" "}
-        {new Intl.DateTimeFormat("en-us").format(item.dueDate)}
+        {new Intl.DateTimeFormat("en-us").format(item.date)}
       </td>
       <td>
-        {(role === "admin" || role === "teacher") && (
-          <div className="flex items-center gap-2">
-            <FormModal table="assignment" type="update" data={item} />
-            <FormModal table="assignment" type="delete" id={item.id} />
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          <Link href={`/list/assignments/${item.id}`}>
+            <button className="flex w-7 h-7 items-center justify-center rounded-full bg-irwinSky">
+              <Image src="/view.png" alt="" width={16} height={16} />
+            </button>
+          </Link>
+          {(role === "admin" || role === "teacher") && (
+            <FormContainer table="assignment" type="delete" id={item.id} />
+          )}
+        </div>
       </td>
     </tr>
   );
@@ -108,21 +111,22 @@ const AssignmentListPage = async ({
   //URL PARAMS CONDITIONS
 
   const query: Prisma.AssignmentWhereInput = {};
-  query.lesson = {};
+  query.class = {};
+  query.subject = {};
+  query.teacher = {};
 
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       if (value !== undefined) {
         switch (key) {
           case "classId":
-            query.lesson.classId = parseInt(value);
+            query.classId = parseInt(value);
             break;
           case "teacherId":
-            query.lesson.teacherId = value;
+            query.teacherId = value;
             break;
           case "search":
-            //query.name = { contains: value, mode: "insensitive" };
-            query.lesson.subject = {
+            query.subject = {
               name: { contains: value, mode: "insensitive" },
             };
 
@@ -139,10 +143,10 @@ const AssignmentListPage = async ({
     case "admin":
       break;
     case "teacher":
-      query.lesson.teacherId = currentUserId!;
+      query.teacherId = currentUserId!;
       break;
     case "student":
-      query.lesson.class = {
+      query.class = {
         students: {
           some: {
             id: currentUserId!,
@@ -151,7 +155,7 @@ const AssignmentListPage = async ({
       };
       break;
     case "parent":
-      query.lesson.class = {
+      query.class = {
         students: {
           some: {
             parentId: currentUserId!,
@@ -166,11 +170,27 @@ const AssignmentListPage = async ({
     prisma.assignment.findMany({
       where: query,
       include: {
-        lesson: {
+        // lesson: {
+        //   select: {
+        //     subject: { select: { name: true } },
+        //     teacher: { select: { firstName: true, lastName: true } },
+        //     class: { select: { name: true } },
+        //   },
+        // },
+        subject: {
           select: {
-            subject: { select: { name: true } },
-            teacher: { select: { firstName: true, lastName: true } },
-            class: { select: { name: true } },
+            name: true,
+          },
+        },
+        class: {
+          select: {
+            name: true,
+          },
+        },
+        teacher: {
+          select: {
+            firstName: true,
+            lastName: true,
           },
         },
       },
@@ -196,7 +216,7 @@ const AssignmentListPage = async ({
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
             {(role === "admin" || role === "teacher") && (
-              <FormModal table="assignment" type="create" />
+              <FormContainer table="assignment" type="create" />
             )}
           </div>
         </div>
