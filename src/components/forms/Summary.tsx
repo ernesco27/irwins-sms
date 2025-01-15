@@ -200,7 +200,7 @@ const Summary = ({ formData, img }: { formData: any; img: any }) => {
                       {record.vaccineDose || "---"}
                     </td>
                     <td className="p-2 border-b border-gray-200">
-                      {record.vaccineDate.toISOString().split("T")[0] || "---"}
+                      {record.vaccineDate?.toISOString().split("T")[0] || "---"}
                     </td>
                   </tr>
                 ))}
