@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import {
+  AssignmentSchema,
   ClassSchema,
   DisciplineSchema,
   ExamSchema,
@@ -732,6 +733,109 @@ export const deleteLesson = async (
     await prisma.lesson.delete({
       where: {
         id: parseInt(id),
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+
+    return { success: false, error: true };
+  }
+};
+
+export const createAssignment = async (
+  currentState: CurrentState,
+  data: AssignmentSchema,
+) => {
+  const { currentUserId, role } = await getSessionData();
+  try {
+    if (role === "teacher") {
+      const teacherAssignment = await prisma.assignment.findFirst({
+        where: {
+          teacherId: currentUserId!,
+          id: data.id,
+        },
+      });
+
+      if (!teacherAssignment) {
+        return { success: false, error: true };
+      }
+    }
+
+    await prisma.assignment.create({
+      data: {
+        date: data.date,
+        teacherId: data.teacherId,
+        classId: data.classId,
+        subjectId: data.subjectId,
+        file: data.file,
+        notes: data.notes,
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+export const updateAssignment = async (
+  currentState: CurrentState,
+  data: AssignmentSchema,
+) => {
+  const { currentUserId, role } = await getSessionData();
+  try {
+    if (role === "teacher") {
+      const teacherAssignment = await prisma.assignment.findFirst({
+        where: {
+          teacherId: currentUserId!,
+          id: data.id,
+        },
+      });
+
+      if (!teacherAssignment) {
+        return { success: false, error: true };
+      }
+    }
+
+    await prisma.assignment.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        date: data.date,
+        teacherId: data.teacherId,
+        classId: data.classId,
+        subjectId: data.subjectId,
+        file: data.file,
+        notes: data.notes,
+      },
+    });
+
+    return { success: true, error: false };
+  } catch (err) {
+    console.log(err);
+    return { success: false, error: true };
+  }
+};
+
+export const deleteAssignment = async (
+  currentState: CurrentState,
+  data: FormData,
+) => {
+  const id = data.get("id") as string;
+
+  const { currentUserId, role } = await getSessionData();
+
+  try {
+    await prisma.assignment.delete({
+      where: {
+        id: parseInt(id),
+        ...(role === "teacher"
+          ? { assignment: { teacherId: currentUserId! } }
+          : {}),
       },
     });
 
